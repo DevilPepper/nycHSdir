@@ -3,3 +3,5 @@ body
 	background-color: black;
 	color: white;
 }
+
+ #map { height: 480px; width: 640px }

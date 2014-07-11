@@ -5,8 +5,10 @@
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	
-	<script type="text/javascript" src="jquery.js"></script>
-	<script type="text/javascript" src="jquery-ui.js"></script>
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+	<script type="text/javascript" src="js/script.js"></script>
 	
 </head>
 	<body>
@@ -14,11 +16,30 @@
 			<div class="search_criteria">
 				<div class="interest_area"></div>
 				<div class="selection_method"></div>
+				<div class="college_readiness"></div>
 				<div class="borough"></div>
 			</div>
 			<div class="search_result"></div>
-			<div class="map"></div>
+			<div id="map" class="map"></div>
 			<div class="more_info"></div>
 		</div>
 	</body>
 </html>
+<!--
+progress report
+http://stackoverflow.com/questions/2924563/access-google-apps-public-spreadsheet-via-javascript
+HS dataset
+	query both
+
+for each
+	drop pins http://www.ascii-middle-finger.com/
+		highlight bubble
+	clear and populate .search_result
+	//pins and results: $(this).addClass(dbn)
+	click on either pin or result item and .more_info gets cleared and populated with info
+		stuff
+
+Output to file button is enabled in .search_criteria when there are results.
+	Popup box with some options
+	doStuff()
+-->

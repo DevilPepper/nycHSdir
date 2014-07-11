@@ -15,6 +15,7 @@ $(window).load(function () {
     $.getJSON(url, function (data, textstatus) {
         console.log(data);
         $.each(data, function (i, entry) {
+		setTimeout(function(){
             geocoder.geocode({
                 'address': entry.printed_school_name
             }, function (results, status) {
@@ -27,7 +28,7 @@ $(window).load(function () {
                         title: entry.printed_school_name
                     });
                 }
-            });
+				}), 200});
         });
     });
 });
