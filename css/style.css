@@ -4,4 +4,5 @@ body
 	color: white;
 }
 
- #map { height: 480px; width: 640px }
+#map { height: 480px; width: 640px }
+.btnGo{height: 32px; width: 32px; background-color:blue}

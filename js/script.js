@@ -1,4 +1,4 @@
-$(window).load(function () {
+$(document).ready(function () {
     // Construct the catalog query string
     url = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?interest_area=Engineering&$$app_token=CGxaHQoQlgQSev4zyUh5aR5J3';
 
@@ -20,7 +20,7 @@ $(window).load(function () {
                 'address': entry.printed_school_name
             }, function (results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                    map.setCenter(results[0].geometry.location);
+                    //map.setCenter(results[0].geometry.location);
                     var marker = new google.maps.Marker({
                         map: map,
                         position: results[0].geometry.location,
@@ -28,7 +28,17 @@ $(window).load(function () {
                         title: entry.printed_school_name
                     });
                 }
-				}), 200});
+				}), 1000});
         });
     });
+	
+$('.btnGo').click(function(){
+$.each($('.search_criteria'), function(i, entry) {
+	filter=entry.attr('id');
+	entry.find('input').is(':checked').each(function(j, test) {
+		select = "+" +test.attr('id');
+		console.log(filter+': '+select);
+		});
+	});
+});
 });
