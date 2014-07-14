@@ -4,6 +4,8 @@ $(document).ready(function () {
     var nycITTkey = '$$app_token=CWamrEJN7KPGKA51TxJ4k9StU';
     var overlays = [];
 
+    var parsekey = 'QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC';
+
     // Intialize our map
     var center = new google.maps.LatLng(40.7127, -74.0059);
     var mapOptions = {
@@ -51,11 +53,11 @@ $(document).ready(function () {
         });
     });
 
-    $('.search_criteria img').mouseenter(function () {
+    $('.image').mouseenter(function () {
         $(this).height("64px");
         $(this).width("64px");
     });
-    $('.search_criteria img').mouseleave(function () {
+    $('.image').mouseleave(function () {
         $(this).height("32px");
         $(this).width("32px");
     });
