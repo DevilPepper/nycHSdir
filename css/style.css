@@ -68,3 +68,11 @@ body
 {
     border-left: thin solid #cc6600;
 }
+
+.result_wrapper {
+	border: 1px solid gray;
+	padding: 5pt;
+	margin-top: 10px;
+	width: auto;
+	display: block;
+}
