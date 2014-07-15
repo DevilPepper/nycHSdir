@@ -35,6 +35,7 @@ $(document).ready(function () {
         $.getJSON(nycITTurl, function (data, textstatus) {
             console.log(nycITTurl);
             console.log(data);
+            $('.search_results').loadTemplate('search_results_tmpl.html', data, { isFile: true });
             $.each(data, function (i, entry) {
                 geocoder.geocode({
                     'address': entry.printed_school_name
