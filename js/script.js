@@ -33,7 +33,8 @@ $(document).ready(function () {
         else nycITTurl += "&";
         nycITTurl += nycITTkey
         $.getJSON(nycITTurl, function (data, textstatus) {
-            console.log(nycITTurl + "\n" + data);
+            console.log(nycITTurl);
+            console.log(data);
             $.each(data, function (i, entry) {
                 geocoder.geocode({
                     'address': entry.printed_school_name
@@ -70,9 +71,9 @@ function getQuery($this)
     var select = "";
     var query = "";
     $this.find('option:selected').each(function () {
-        select = $(this).attr('value') + ",";
+        select += filter + "='" + $(this).attr('value') + "' OR ";
     });
-    select = select.slice(0, -1);
-    if (select.length > 0) query += filter + "=" + select + "&";
+    select = select.slice(0, -4);
+    if (select.length > 0) query += select + "&";
     return query;
 }
