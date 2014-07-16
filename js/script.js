@@ -37,6 +37,7 @@ $(document).ready(function () {
     });
 	
     $('.btnGo').click(function () {
+        collapseIT($('#search_collapse'));
         var nycITTsql = '?';
         while (overlays[0]) {
             overlays.pop().setMap(null);
@@ -81,9 +82,7 @@ $(document).ready(function () {
         });
     });
 
-    $('.result_name').click(function () {
-        console.log($(this).parent().attr('id'));
-    });
+
 
     $('.image').mouseenter(function () {
         $(this).height("64px");
@@ -104,6 +103,23 @@ $(document).ready(function () {
     });
     
 });
+
+$(document).on('click', '.result_name', function () {
+    console.log($(this).parent().attr('id'));
+});
+
+$(document).on('click', '.collapsable button', function () {
+    collapseIT($(this).parent());
+});
+
+function collapseIT($this){
+    $this.children('button').toggle(function () {
+        $(this).text('+');
+    }, function () {
+        $(this).text('-');
+    });
+    $this.children('div').slideToggle('slow');
+}
 
 function getQuery($this)
 {

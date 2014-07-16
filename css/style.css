@@ -80,3 +80,7 @@ body
 {
     cursor: pointer;
 }
+.collapsable 
+{
+    border:solid;
+}
