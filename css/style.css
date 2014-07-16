@@ -76,7 +76,7 @@ body
 	margin-top: 10px;
 	width: auto;
 	display: block;
-    overflow-y:scroll;
+    /*overflow-y:scroll;*/
     border-color:#ff9900;
 }
 .result_name 
