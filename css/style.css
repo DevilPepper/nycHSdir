@@ -78,6 +78,8 @@ body
 	display: block;
     /*overflow-y:scroll;*/
     border-color:#ff9900;
+    background-color:white;
+    color: black;
 }
 .result_name 
 {
@@ -99,6 +101,7 @@ body
     z-index:1;
     margin-left:25%;
     margin-right:25%;
+    background-color:white;
 }
 
 .search_results, .collapsable 
