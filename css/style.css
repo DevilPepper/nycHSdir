@@ -77,10 +77,16 @@ body
 	width: auto;
 	display: block;
     overflow-y:scroll;
+    border-color:#ff9900;
 }
 .result_name 
 {
     cursor: pointer;
+}
+
+.result_url 
+{
+    color: #0099ff;
 }
 .collapsable 
 {
@@ -91,11 +97,13 @@ body
 .search_results 
 {
     z-index:1;
+    margin-left:25%;
+    margin-right:25%;
 }
 
 .search_results, .collapsable 
 {
     background-color:black;
-    opacity:0.8;
+    opacity:0.9;
     position:fixed;
 }

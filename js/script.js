@@ -106,7 +106,7 @@ $(document).ready(function () {
 
 $(document).on('click', '.result_name', function () {
     console.log($(this).parent().attr('id'));
-    $("#map").fadeTo('slow',0.25);
+    $("#map").fadeTo('slow',0.1);
 });
 
 $(document).on('click', '.collapsable button', function () {
