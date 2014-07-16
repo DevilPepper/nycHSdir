@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // Construct the catalog query string
-    var nycITTdb = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json';
-    var nycITTkey = '$$app_token=CWamrEJN7KPGKA51TxJ4k9StU';
+    var nycITTdb = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?';
+    var nycITTkey = '&$$app_token=CWamrEJN7KPGKA51TxJ4k9StU';
     var overlays = [];
     var resultsStore = [];
     var currPage = 1;
@@ -38,7 +38,7 @@ $(document).ready(function () {
 	
     $('.btnGo').click(function () {
         collapse_search();
-        var nycITTsql = '?';
+        var nycITTsql = '';
         while (overlays[0]) {
             overlays.pop().setMap(null);
         }
@@ -51,9 +51,13 @@ $(document).ready(function () {
             nycITTsql += query;
         });
         var nycITTurl = nycITTdb;
-        if (nycITTsql.length > 1) nycITTurl += nycITTsql;
+        if (nycITTsql.length > 1)
+        {
+            nycITTsql = nycITTsql.slice(0, -5);
+            nycITTurl += "$where="+ nycITTsql;
+        }
         else nycITTurl += "&";
-        nycITTurl += nycITTkey
+        nycITTurl += nycITTkey;
         $.getJSON(nycITTurl, function (searchResults, textstatus) {
             console.log(nycITTurl);
             console.log(searchResults);
@@ -137,13 +141,13 @@ function getQuery($this)
 {
     //?interest_area=Engineering
     var filter = $this.attr('id');
-    var select = "";
+    var select = "(";
     var query = "";
     $this.find('option:selected').each(function () {
         select += filter + "='" + $(this).attr('value') + "' OR ";
     });
     select = select.slice(0, -4);
-    if (select.length > 0) query += select + "&";
+    if (select.length > 0) query += select + ")" + " AND ";
     return query;
 }
 

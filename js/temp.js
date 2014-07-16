@@ -1,5 +1,12 @@
 $(document).ready(function () {
     // Construct the catalog query string
+
+
+    url = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?$select=dbn,urls&$$app_token=CGxaHQoQlgQSev4zyUh5aR5J3';
+
+
+
+    /*
     url = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?$select=interest_area,selection_method,borough,program_name&$$app_token=CGxaHQoQlgQSev4zyUh5aR5J3';
 
     $.getJSON(url, function (data, textstatus) {
@@ -8,6 +15,7 @@ $(document).ready(function () {
         var admissionrq = [];
         var program = [];
         var borough = [];
+        var urls;
         $.each(data, function (i, entry) {
             if ($.inArray(entry.interest_area, interest) == -1) {
                 interest.push(entry.interest_area);
@@ -68,6 +76,6 @@ $('.search_criteria').each(function() {
 	$(this).find('input').is(':checked').each(function() {
 		select += "+" +$(this).attr('id');
 	});
+    */
 });
-*/
 
