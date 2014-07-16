@@ -3,8 +3,14 @@ $(document).ready(function () {
     var nycITTdb = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json';
     var nycITTkey = '$$app_token=CWamrEJN7KPGKA51TxJ4k9StU';
     var overlays = [];
+    var resultsStore = [];
+    var currPage = 1;
+    var lastPage = 1;
+    var perPage = 5;
 
     var parsekey = 'QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC';
+
+    $('.search_results').hide();
 
     // Intialize our map
     var center = new google.maps.LatLng(40.7127, -74.0059);
@@ -17,11 +23,26 @@ $(document).ready(function () {
     // Retrieve our data and plot it
     var geocoder = new google.maps.Geocoder();
     
+    $.addTemplateFormatter("Program", function (value, options) {
+        return "Program name: " + value;
+    });
+    $.addTemplateFormatter("Interest", function (value, options) {
+        return "Interest area: " + value;
+    });
+    $.addTemplateFormatter("Admission", function (value, options) {
+        return "Admission method: " + value;
+    });
+    $.addTemplateFormatter("Bold", function (value, options) {
+        return "<b>" + value + "</b>";
+    });
 	
     $('.btnGo').click(function () {
         var nycITTsql = '?';
         while (overlays[0]) {
             overlays.pop().setMap(null);
+        }
+        while (resultsStore[0]) {
+            resultsStore.pop();
         }
 
         $('.nycITT div').each(function () {
@@ -32,11 +53,16 @@ $(document).ready(function () {
         if (nycITTsql.length > 1) nycITTurl += nycITTsql;
         else nycITTurl += "&";
         nycITTurl += nycITTkey
-        $.getJSON(nycITTurl, function (data, textstatus) {
+        $.getJSON(nycITTurl, function (searchResults, textstatus) {
             console.log(nycITTurl);
-            console.log(data);
-            $('.search_results').loadTemplate('search_results_tmpl.html', data, { isFile: true });
-            $.each(data, function (i, entry) {
+            console.log(searchResults);
+            resultsStore = searchResults;
+            currPage = 1;
+            lastPage = Math.ceil(searchResults.length / perPage);
+            renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', searchResults, currPage, perPage);
+            //$('.search_results').loadTemplate('search_results_tmpl.html', searchResults, { isFile: true, paged: true, pageNo: currPage, elemPerPage: 5 });
+            $('.search_results').show();
+            $.each(searchResults, function (i, entry) {
                 geocoder.geocode({
                     'address': entry.printed_school_name
                 }, function (results, status) {
@@ -55,6 +81,10 @@ $(document).ready(function () {
         });
     });
 
+    $('.result_name').click(function () {
+        console.log($(this).parent().attr('id'));
+    });
+
     $('.image').mouseenter(function () {
         $(this).height("64px");
         $(this).width("64px");
@@ -63,6 +93,16 @@ $(document).ready(function () {
         $(this).height("32px");
         $(this).width("32px");
     });
+
+
+
+    $('#prevPage').click(function () {
+        if (currPage > 1) renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', resultsStore, --currPage, perPage);
+    });
+    $('#nextPage').click(function () {
+        if (currPage < lastPage) renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', resultsStore, ++currPage, perPage);
+    });
+    
 });
 
 function getQuery($this)
@@ -77,4 +117,8 @@ function getQuery($this)
     select = select.slice(0, -4);
     if (select.length > 0) query += select + "&";
     return query;
+}
+
+function renderTemplates($dest, $tmpl, data, pageNo, perPage) {
+    $dest.loadTemplate($tmpl, data, { isFile: true, paged: true, pageNo: pageNo, elemPerPage: perPage });
 }

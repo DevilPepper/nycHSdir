@@ -76,3 +76,7 @@ body
 	width: auto;
 	display: block;
 }
+.result_name 
+{
+    cursor: pointer;
+}
