@@ -78,18 +78,30 @@ body
 	display: block;
     /*overflow-y:scroll;*/
     border-color:#ff9900;
-    background-color:white;
-    color: black;
+    font-family:sans-serif;
 }
 .result_name 
 {
     cursor: pointer;
 }
 
-.result_url 
+.result_url a:link
 {
-    color: #0099ff;
+    color: #ffe78a;
 }
+.result_url a:visited
+{
+    color: #ff8a00;
+}
+.result_url a:hover
+{
+    color: #ffff92;
+}
+.result_url a:active
+{
+    color: #ffff9a;
+}
+
 .collapsable 
 {
     border:solid;
@@ -101,12 +113,18 @@ body
     z-index:1;
     margin-left:25%;
     margin-right:25%;
-    background-color:white;
 }
 
 .search_results, .collapsable 
 {
     background-color:black;
-    opacity:0.9;
     position:fixed;
+    /* Fallback for web browsers that doesn't support RGBa */
+    background: rgb(0, 0, 0);
+    /* RGBa with 0.8 opacity */
+    background: rgba(0, 0, 0, 0.8);
+    /* For IE 5.5 - 7*/
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
+    /* For IE 8*/
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
 }
