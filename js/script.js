@@ -6,7 +6,7 @@ $(document).ready(function () {
     var resultsStore = [];
     var currPage = 1;
     var lastPage = 1;
-    var perPage = 5;
+    var perPage = 4;
 
     var parsekey = 'QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC';
 
@@ -37,7 +37,7 @@ $(document).ready(function () {
     });
 	
     $('.btnGo').click(function () {
-        collapseIT($('#search_collapse'));
+        collapse_search();
         var nycITTsql = '?';
         while (overlays[0]) {
             overlays.pop().setMap(null);
@@ -106,12 +106,23 @@ $(document).ready(function () {
 
 $(document).on('click', '.result_name', function () {
     console.log($(this).parent().attr('id'));
+    $("#map").fadeTo('slow',0.25);
 });
 
 $(document).on('click', '.collapsable button', function () {
-    collapseIT($(this).parent());
+    collapse_search();
 });
 
+function collapse_search() {
+    $('.collapsable button').text(function () {
+        return $(this).text() == '+' ? '-' : '+';
+    });
+
+    $('.search_results').slideToggle();
+    
+    $('.search_criteria').slideToggle('slow');
+}
+/*
 function collapseIT($this){
     $this.children('button').toggle(function () {
         $(this).text('+');
@@ -120,6 +131,7 @@ function collapseIT($this){
     });
     $this.children('div').slideToggle('slow');
 }
+*/
 
 function getQuery($this)
 {
