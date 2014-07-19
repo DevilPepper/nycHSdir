@@ -221,7 +221,7 @@ $(document).on('click', '.collapsable button', function () {
 });
 
 $(document).on('click', '.xplode', function () {
-    $(this).parent().toggle("explode", { pieces: 36 }, 'slow' );
+    $(this).parent().toggle("explode", { pieces: 36 });
 });
 
 function collapse_search() {
