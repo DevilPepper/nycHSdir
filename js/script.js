@@ -9,12 +9,14 @@ $(document).ready(function () {
     var overlays = [];
     var resultsStore = [];
     var currPage = 1;
+    var currPage2 = 1;
     var lastPage = 1;
     var perPage = 4;
 
     var parsekey = 'QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC';
 
     $('.search_results').hide();
+    $('.more_info').hide();
 
     // Intialize our map
     var center = new google.maps.LatLng(40.7127, -74.0059);
@@ -36,6 +38,21 @@ $(document).ready(function () {
     $.addTemplateFormatter("Admission", function (value, options) {
         return "Admission method: " + value;
     });
+    $.addTemplateFormatter("Overall", function (value, options) {
+        return "Overall ranking: " + value;
+    });
+    $.addTemplateFormatter("College", function (value, options) {
+        return "College-Readiness ranking: " + value;
+    });
+    $.addTemplateFormatter("Principal", function (value, options) {
+        return "Principal " + value;
+    });
+    $.addTemplateFormatter("Attend", function (value, options) {
+        return "Attendance rate: " + value;
+    });
+    $.addTemplateFormatter("Post2nd", function (value, options) {
+        return "Post secondary enrollment rate: " + value;
+    });
     $.addTemplateFormatter("Bold", function (value, options) {
         return "<b>" + value + "</b>";
     });
@@ -44,6 +61,7 @@ $(document).ready(function () {
         collapse_search();
         var nycITTsql = '';
         currPage = 1;
+        currPage2 = 1;
         while (overlays[0]) {
             overlays.pop().setMap(null);
         }
@@ -180,6 +198,16 @@ $(document).ready(function () {
     $('#nextPage').click(function () {
         if (currPage < lastPage) renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', resultsStore, ++currPage, perPage);
     });
+    $('#previous2').click(function () {
+        if (currPage2 > 1) renderTemplates($('.print_wrapper'), 'print_tmpl.html', resultsStore, --currPage2, 1);
+    });
+    $('#next2').click(function () {
+        if (currPage2 < resultsStore.length) renderTemplates($('.print_wrapper'), 'print_tmpl.html', resultsStore, ++currPage2, 1);
+    });
+    $('.printIT').click(function () {
+        renderTemplates($('.print_wrapper'), 'print_tmpl.html', resultsStore, currPage2, 1);
+        $('.more_info').show();
+    });
     
 });
 
@@ -190,6 +218,10 @@ $(document).on('click', '.result_name', function () {
 
 $(document).on('click', '.collapsable button', function () {
     collapse_search();
+});
+
+$(document).on('click', '.xplode', function () {
+    $(this).parent().toggle("explode", { pieces: 36 }, 'slow' );
 });
 
 function collapse_search() {

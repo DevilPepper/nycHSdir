@@ -23,7 +23,7 @@ body
     */
 
     text-align:right;
-    font-size:2em;
+    font-size:1em;
     margin-top:2em;
 }
 .search_criteria p 
@@ -109,6 +109,14 @@ div.nycDOE
 {
     cursor: pointer;
 }
+.result_url 
+{
+    margin-top:2em;
+}
+
+.print_wrapper .result_url {
+    margin-top:15%;
+}
 
 .result_url a:link
 {
@@ -136,11 +144,9 @@ div.nycDOE
 .search_results 
 {
     z-index:1;
-    margin-left:25%;
-    margin-right:25%;
 }
 
-.search_results, .collapsable 
+.search_results, .collapsable, .more_info
 {
     background-color:black;
     position:fixed;
@@ -160,13 +166,12 @@ margin:5% 0 12% 0;
 }
 
 #detailschool {
-font-size:3.3em;
+font-size:2.75em;
 color:#0066cc;
 text-align:left;
 padding:10px;
 font-family:sans-serif;
-width:33%;
-
+clear:both;
 
 }
 
@@ -198,8 +203,6 @@ margin:10% 0;
 padding:10px 0;
 
 }
-div.boxleft {
-}
 
 div.detail_left_column {
 font-family:serif;
@@ -221,7 +224,8 @@ border-right:thin solid #cc6600;
 overflow:hidden;
 
 }
-div.detail_middle_column {
+div.detail_middle_column 
+{
 font-family:serif;
 font-size:1.25em;
 float:left;
@@ -231,10 +235,28 @@ border-right:thin solid #cc6600;
 overflow:hidden;
 
 }
-#urls {
+#urls 
+{
 clear:both;
 text-align:center;
 font-style:italic;
 margin-top:5%;
 
+}
+
+.xplode 
+{
+    text-shadow: 0px 1px 0px rgba(255,255,255,.5);
+    cursor: pointer;
+    border:groove;
+    float:right;
+}
+
+.more_info 
+{
+    z-index:2;
+    left:0;
+    top:0;
+    width:80%;
+    height:80%;
 }
