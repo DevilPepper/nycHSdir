@@ -1,7 +1,11 @@
 $(document).ready(function () {
     // Construct the catalog query string
+    Parse.initialize("MtPQsRRglfpClARD9Gskmv7rdkvUaMCHHJ2G90Ri", "QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC");
+    var doedb = Parse.Object.extend("doe");
+
     var nycITTdb = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?';
     var nycITTkey = '&$$app_token=CWamrEJN7KPGKA51TxJ4k9StU';
+    var nycITTsel = '$select=program_code,program_name,dbn,printed_school_name,interest_area,selection_method,borough,urls&'
     var overlays = [];
     var resultsStore = [];
     var currPage = 1;
@@ -39,6 +43,7 @@ $(document).ready(function () {
     $('.btnGo').click(function () {
         collapse_search();
         var nycITTsql = '';
+        currPage = 1;
         while (overlays[0]) {
             overlays.pop().setMap(null);
         }
@@ -57,32 +62,102 @@ $(document).ready(function () {
             nycITTurl += "$where="+ nycITTsql;
         }
         else nycITTurl += "&";
+        //nycITTurl += nycITTsel;
         nycITTurl += nycITTkey;
         $.getJSON(nycITTurl, function (searchResults, textstatus) {
             console.log(nycITTurl);
             console.log(searchResults);
-            resultsStore = searchResults;
-            currPage = 1;
-            lastPage = Math.ceil(searchResults.length / perPage);
-            renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', searchResults, currPage, perPage);
-            //$('.search_results').loadTemplate('search_results_tmpl.html', searchResults, { isFile: true, paged: true, pageNo: currPage, elemPerPage: 5 });
-            $('.search_results').show();
-            $.each(searchResults, function (i, entry) {
-                geocoder.geocode({
-                    'address': entry.printed_school_name
-                }, function (results, status) {
-                    if (status == google.maps.GeocoderStatus.OK) {
-                        //map.setCenter(results[0].geometry.location);
-                        var marker = new google.maps.Marker({
-                            map: map,
-                            position: results[0].geometry.location,
-                            //title: location.name
-                            title: entry.printed_school_name
-                        });
-                        overlays.push(marker);
-                    }
+
+            var dbns = [];
+            $.each(searchResults, function (i, socrata) { if ($.inArray(socrata.dbn, dbns) == -1) dbns.push(socrata.dbn); });
+            var parseQuery = new Parse.Query(doedb);
+            console.log(dbns);
+            parseQuery.containedIn("dbn", dbns);
+            //get stuff
+            $('.nycDOE div').each(function () {
+                var filt = $(this).attr('id');
+                var er = "";
+                $(this).find('input').each(function () {
+                    er = $(this).attr('value');
                 });
+                if(er != null) parseQuery.equalTo(filt, er);
             });
+
+            var dbnp = [];
+            parseQuery.find({
+                success: function (parsedb) {
+                    $.each(parsedb, function (i, parse) { if ($.inArray(parse.dbn, dbnp) == -1) dbnp.push(parse.dbn); });
+                    console.log(parsedb);
+                    //$.each(searchResults, function (i, socrata) { if ($.inArray(socrata.dbn, dbnp) == -1) searchResults[i--].pop(); });
+
+                    /*
+                    var nycITTnew = nycITTdb;
+                    if (nycITTsql.length > 1) {
+                        nycITTnew += "$where=" + nycITTsql;
+                    }
+                    else nycITTnew += "&";
+                    nycITTnew += nycITTsel;
+                    nycITTnew += nycITTkey; 
+                    */
+
+                    //monster fusion
+                    var parseSODA = [{}];
+                    $.each(parsedb, function (x, parseEX) {
+                        var program = [{}];
+                        var multiple = $.grep(searchResults, function (dietSODA) { return dietSODA.dbn == parseEX.attributes.dbn; });
+                        //console.log(multiple);
+                        var liteSODA;
+                        $.each(multiple, function (y, dietSODA) {
+                            liteSODA = dietSODA;
+                            program[y] = {
+                                program_code: dietSODA.program_code,
+                                program_name: dietSODA.program_name,
+                                interest_area: dietSODA.interest_area,
+                                selection_method: dietSODA.selection_method
+                            };
+                        });
+                        parseSODA[x] = {
+                            dbn: parseEX.attributes.dbn,
+                            printed_school_name: liteSODA.printed_school_name,
+                            borough: liteSODA.borough,
+                            urls: liteSODA.urls,
+                            principal: parseEX.attributes.principal,
+                            postsecondary_enrollment: parseEX.attributes.postsecondaryenrollmentrate18months,
+                            college_readiness: parseEX.attributes.collegeandcareerreadinessgrade,
+                            overall: parseEX.attributes.overallgrade,
+                            attendance: parseEX.attributes.attendancerate,
+                            programs: program
+                        };
+                        multiple = null;
+                        program = null;
+                    });
+                    //
+                    console.log(parseSODA);
+                    resultsStore = parseSODA;
+                    lastPage = Math.ceil(parseSODA.length / perPage);
+                    renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', parseSODA, currPage, perPage);
+                    $('.search_results').show();
+                    $.each(parseSODA, function (i, entry) {
+                        geocoder.geocode({
+                            'address': entry.printed_school_name
+                        }, function (results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                //map.setCenter(results[0].geometry.location);
+                                var marker = new google.maps.Marker({
+                                    map: map,
+                                    position: results[0].geometry.location,
+                                    //title: location.name
+                                    title: entry.printed_school_name
+                                });
+                                overlays.push(marker);
+                            }
+                        });
+                    });
+                }
+            });
+            
+
+            
         });
     });
 

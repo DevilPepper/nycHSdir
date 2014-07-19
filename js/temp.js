@@ -4,7 +4,26 @@ $(document).ready(function () {
 
     url = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?$select=dbn,urls&$$app_token=CGxaHQoQlgQSev4zyUh5aR5J3';
 
+    $.getJSON(url, function (data, textstatus) {
+        var stuff = [];
+        var pop = [];
+        $.each(data, function (i, entry) {
+            if ($.inArray(entry.dbn, stuff) == -1) stuff.push(entry.dbn);
+            pop.push(i);
+        });
 
+        $.each(pop, function (i, n) {
+            data.pop(n);
+        });
+
+        $.each(data, function(i, entry){
+            
+        });
+
+        console.log(data);
+        console.log(stuff);
+
+    });
 
     /*
     url = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?$select=interest_area,selection_method,borough,program_name&$$app_token=CGxaHQoQlgQSev4zyUh5aR5J3';

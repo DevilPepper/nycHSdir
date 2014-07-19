@@ -14,14 +14,16 @@ body
 }
 .btnGo
 {
+    /*
     clear:both;
     background-color:blue;
     height:64px;
     width:64px;
     border-radius:100%;
+    */
 
     text-align:right;
-    font-size:1.25em;
+    font-size:2em;
     margin-top:2em;
 }
 .search_criteria p 
@@ -40,11 +42,16 @@ body
 
 .image 
 {
+    /*
     background-color:yellow;
     height:32px;
     width:32px;
     border-radius:100%;
     color:orange;
+    */
+    
+    height:2em;
+    width:2em;
 }
 
 .search_criteria em 
@@ -52,20 +59,38 @@ body
     font-size:70%;
 }
 
-.nycITT div, .nycDOE div
+.nycITT div, div.nycDOE
 {
     float:left;
-    width:32%;
+    width:24%;
     text-align:center;
     padding:1em 0;
     overflow:hidden;
 }
-#interest_area, #selection_method
+
+.nycITT p, nycDOE p
 {
-    border-right: thin solid #cc6600;
+margin:.75em 0 .1em 0;
+ font-weight:bold;
+ font-size:1.25em;
+font-family:sans-serif;
+ padding-bottom:5%;
 }
 
-#borough, #selection_method
+div.nycITT {
+    clear:both;
+    
+    width:100%;
+    padding-bottom:5%;
+}
+
+#selection_method
+{
+    border-right: thin solid #cc6600;
+    border-left: thin solid #cc6600;
+}
+
+div.nycDOE 
 {
     border-left: thin solid #cc6600;
 }
@@ -127,4 +152,89 @@ body
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
     /* For IE 8*/
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+}
+
+/*print_templ*/
+div.print_wrapper {
+margin:5% 0 12% 0;
+}
+
+#detailschool {
+font-size:3.3em;
+color:#0066cc;
+text-align:left;
+padding:10px;
+font-family:sans-serif;
+width:33%;
+
+
+}
+
+
+#overall {
+width:100%;
+text-align:center;
+margin:0 1%;
+width: 1em 40%;
+padding:15px; 
+font-size:2em;
+
+}
+#college_readiness {
+width:100%;
+margin:10% 1%;
+width: 1em 40%;
+ font-size:2em;
+ width:100%;
+text-align:center;
+margin:0 1%;
+
+
+}
+div.detail-3col {
+width:100%;
+clear:both;
+margin:10% 0;
+padding:10px 0;
+
+}
+div.boxleft {
+}
+
+div.detail_left_column {
+font-family:serif;
+font-size:1.25em;
+float:left;
+width:32%;
+text-align:center;
+border-right:thin solid #cc6600;
+overflow:hidden;
+
+}
+div.detail_right_column {
+font-family:serif;
+font-size:1.25em;
+float:left;
+width:32%;
+text-align:center;
+border-right:thin solid #cc6600;
+overflow:hidden;
+
+}
+div.detail_middle_column {
+font-family:serif;
+font-size:1.25em;
+float:left;
+width:32%;
+text-align:center;
+border-right:thin solid #cc6600;
+overflow:hidden;
+
+}
+#urls {
+clear:both;
+text-align:center;
+font-style:italic;
+margin-top:5%;
+
 }

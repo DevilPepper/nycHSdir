@@ -10,6 +10,8 @@
     <script type="text/javascript" src="js/jquery-loadTemplate.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
 
+    <script src="//www.parsecdn.com/js/parse-1.2.19.min.js"></script>
+
 	<script type="text/javascript" src="js/script.js"></script>
 	<!--script type="text/javascript" src="js/temp.js"></script-->
 	
@@ -22,7 +24,7 @@
 
                 <div class="nycITT">
 				    <div id="interest_area">
-				        <p><div class="image">1</div> Select your interests <br/><em>Use Ctrl (or Cmd) to select multiple</em></p>
+				        <p><img class="image" src="img/one.png"  alt="First Step">Select your interests <br/><em>Use Ctrl (or Cmd) to select multiple</em></p>
 			            
                         <select multiple="multiple">
                             <option value="Animal Science">Animal Science</option>
@@ -50,7 +52,7 @@
 				    </div>
 			
 				    <div id="selection_method">
-				        <p><div class="image">2</div>Select Other Admission Requirements</p>
+				        <p><img class="image" src="img/two.png" alt="Second Step">Select Other Admission Requirements</p>
 			
                         <select multiple="multiple">
                             <option value="Audition">Audition</option>
@@ -69,7 +71,7 @@
 			
 			
 				    <div id="borough">
-				        <p><div class="image">3</div> Select Borough Preferences</p>
+				        <p><img class="image" src="img/three.png" alt="Third Step"> Select Borough Preferences</p>
 			
                         <select multiple="multiple">
                             <option value="Bronx">Bronx</option>
@@ -83,11 +85,21 @@
                 </div>
                 
                 <div class="nycDOE">
-				    <div id="college_readiness">
+                    <div id="collegeandcareerreadinessgrade">
+                        <p class="dropdown2"><img class="image" src="img/four.png" alt="Fourth Step">
+                        How important is college readiness? (A-F) <br/><input type="text" class="college_readinessinput"></input>
+                        </p>
+                    </div>
+               
+                    <div id="postsecondaryenrollmentrate18months">
+                        <p class="dropdown2">
+                        What is a minimum acceptable percentage of post-secondary enrollment? <br/><input type="text" class="postsecondaryenrollmentrate18monthsinput"></input>
+                        </p>
                     </div>
                 </div>
-
-                <div class="btnGo">Search</div>
+                
+                <input type="button" value="Submit" class="btnGo">
+                </div>
 			</div>
            </div>
 			<div class="search_results">
