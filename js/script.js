@@ -95,10 +95,11 @@ $(document).ready(function () {
             $('.nycDOE div').each(function () {
                 var filt = $(this).attr('id');
                 var er = "";
-                $(this).find('input').each(function () {
-                    er = $(this).attr('value');
+                $(this).find('input:text').each(function () {
+                    er = $(this).val();
                 });
-                if(er != null) parseQuery.equalTo(filt, er);
+                //er = $(this).find('input:text').attr('value');
+                if (er.length>0) parseQuery.equalTo(filt, er);
             });
 
             var dbnp = [];
