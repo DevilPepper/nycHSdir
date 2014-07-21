@@ -3,6 +3,8 @@ $(document).ready(function () {
     Parse.initialize("MtPQsRRglfpClARD9Gskmv7rdkvUaMCHHJ2G90Ri", "QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC");
     var doedb = Parse.Object.extend("doe");
 
+    var doeDistrictsKML = "https://data.cityofnewyork.us/api/geospatial/r8nu-ymqj?method=export&format=KML";
+
     var nycITTdb = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?';
     var nycITTkey = '&$$app_token=CWamrEJN7KPGKA51TxJ4k9StU';
     var nycITTsel = '$select=program_code,program_name,dbn,printed_school_name,interest_area,selection_method,borough,urls&'
@@ -26,6 +28,13 @@ $(document).ready(function () {
     };
     var map = new google.maps.Map(document.getElementById("map"), mapOptions);
     
+    //Add KML boundaries
+    var doeBoundaries = new google.maps.KmlLayer({
+        url: doeDistrictsKML,
+        map: map
+    });
+
+
     // Retrieve our data and plot it
     var geocoder = new google.maps.Geocoder();
     
