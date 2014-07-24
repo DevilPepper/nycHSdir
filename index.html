@@ -16,11 +16,34 @@
 	
 </head>
 	<body>
-		<div>
-            <div class="collapsable" id="search_collapse">
-                <button>-</button><br />
-			<div class="search_criteria">
+        <!--[if IE]><div style='clear: both; height: 112px; padding:0; position: relative;'><a href="http://www.theie9countdown.com/ie-users-info"><img src="http://www.theie9countdown.com/assets/badge_iecountdown.png" border="0" height="112" width="348" alt="" /></a></div><![endif]-->
+		<div id="main">
+            <div id="main_left">
+            <div id="sidebar">
+        <h3>Filters</h3>
+        <div>
+            <ol id="filters">
+                <li id="location">Location</li>
+                <li id="nycITT">Programs</li>
+                <li id="nycDOE">Acadamics</li>
+            </ol>
+        </div>
 
+        <h3 id="showResults">Show Results</h3>
+			<div class="search_results">
+                <div class="result_wrapper"></div>
+                <button id="prevPage">Previous</button>
+                <button id="nextPage">Next</button>
+                <button class="printIt">Print Results</button>
+			</div>
+        </div>
+        </div>
+
+            <div id="main_right">
+			<div class="search_criteria">
+                
+                <div class="xplode">x</div>
+                <div id="filter_sections">
                 <div class="nycITT">
 				    <div id="interest_area">
 				        <p><img class="image" src="img/one.png"  alt="First Step">Select your interests <br/><em>Use Ctrl (or Cmd) to select multiple</em></p>
@@ -66,10 +89,11 @@
                             <option value="Zoned">Zoned</option>
                         </select>
 				    </div>
-			
-			
-			
-				    <div id="borough">
+
+                </div>
+
+                <div class="location">
+                    <div id="borough">
 				        <p><img class="image" src="img/three.png" alt="Third Step"> Select Borough Preferences</p>
 			
                         <select multiple="multiple">
@@ -80,7 +104,6 @@
                             <option value="Staten Island">Staten Island</option>
                         </select>
 				    </div>
-
                 </div>
                 
                 <div class="nycDOE">
@@ -97,16 +120,13 @@
                     </div>
                 </div>
                 
-                <input type="button" value="Submit" class="btnGo">
                 </div>
 			</div>
            </div>
-			<div class="search_results">
-                <div class="result_wrapper"></div>
-                <button id="prevPage">Previous</button>
-                <button id="nextPage">Next</button>
-                <button class="printIt">Print Results</button>
-			</div>
+            </div>
+
+            
+
 			<div id="map" class="map"></div>
 			<div class="more_info">
                 <div class="xplode">x</div>

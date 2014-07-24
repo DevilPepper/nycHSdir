@@ -12,6 +12,48 @@ body
     width: 100%;
 
 }
+
+#main 
+{
+    position:fixed;
+    z-index:1;
+    margin-left:10%;
+    margin-right:10%;
+}
+
+
+
+#main_left 
+{
+    float:left;
+    display: inline;
+}
+
+#main_right 
+{
+    display: inline;
+    float:right;
+	background-color: black;
+	color: white;
+}
+
+#sidebar 
+{
+    width:200px;
+}
+
+
+.search_criteria 
+{
+    width:800px;
+    height:400px;
+}
+/*
+#filter_sections, #filter_sections div
+{
+    height:640px;
+}
+*/
 .btnGo
 {
     /*
@@ -144,6 +186,7 @@ div.nycDOE
 .search_results 
 {
     z-index:1;
+    height:400px;
 }
 
 .search_results, .collapsable, .more_info
@@ -258,3 +301,27 @@ margin-top:5%;
     left:0;
     top:0;
 }
+
+
+
+
+.ui-accordion .ui-accordion-content {
+            padding: 0px;
+        }
+  #filters .ui-selecting { background: #FECA40; }
+  #filters .ui-selected { background: #F39814; color: white; }
+  #filters { 
+        list-style-type: none;
+        padding:0px;
+        margin:0px;
+  }
+  #filters li { 
+  	background: #222222;
+	border-radius: 5px;
+	border: 1px solid black;
+	margin: 3px;
+	padding: 0.4em;
+	font-size: 1em;
+	height: 16px;
+	font-family: Verdana, Arial, Sans-Serif;
+  }

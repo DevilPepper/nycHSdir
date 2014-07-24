@@ -58,6 +58,11 @@ $(document).ready(function () {
     //now hide the stuff that shouldn't be on the screen yet
     $('.search_results').hide();
     $('.more_info').hide();
+    $('.search_criteria').hide();
+
+    //make these things special
+    $('#sidebar').accordion({ collapsible: true });
+    $('#filters').selectable();
 
     // Intialize our map
     var center = new google.maps.LatLng(40.7127, -74.0059);//NY latitute, longitude coordinates
@@ -77,8 +82,9 @@ $(document).ready(function () {
     //new geocoder
     var geocoder = new google.maps.Geocoder();
 	
-    $('.btnGo').click(function () {
-        collapse_search();
+    $('#showResults').click(function () {
+        //collapse_search();
+        $('.search_criteria').hide("explode");
         var nycITTsql = '';
         currPage = 1;
         currPage2 = 1;
@@ -245,15 +251,7 @@ $(document).ready(function () {
     });
 
 
-    //mouse events for the silly numbers
-    $('.image').mouseenter(function () {
-        $(this).height("64px");
-        $(this).width("64px");
-    });
-    $('.image').mouseleave(function () {
-        $(this).height("32px");
-        $(this).width("32px");
-    });
+    
 
     //click events for next and previous buttons. They load next page of results
     $('#prevPage').click(function () {
@@ -274,6 +272,27 @@ $(document).ready(function () {
         $('.more_info').show();
     });
     
+});
+
+//mouse events for the silly numbers
+$(document).on('mouseenter', '.image', function () {
+    $(this).height("64px");
+    $(this).width("64px");
+});
+$(document).on('mouseleave', '.image', function () {
+    $(this).height("32px");
+    $(this).width("32px");
+});
+
+
+$(document).on('mouseenter', '#filters li', function () {
+    $('.search_criteria').show();
+    $('#filter_sections div').each(function () {
+        $(this).hide();
+    });
+    var display = '.' + $(this).attr('id');
+    $(display).show();
+    $(display + " *").show();
 });
 
 //when you click on the name text in the results, this happens
