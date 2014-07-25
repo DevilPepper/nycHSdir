@@ -290,6 +290,10 @@ $(document).on('mouseenter', '#filters li', function () {
     $('#filter_sections div').each(function () {
         $(this).hide();
     });
+    $('#filters li').each(function () {
+        $(this).removeClass('ui-selected');
+    });
+    $(this).addClass('ui-selected');
     var display = '.' + $(this).attr('id');
     $(display).show();
     $(display + " *").show();
