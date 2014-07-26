@@ -302,6 +302,10 @@ margin-top:5%;
     top:0;
 }
 
+#feedback span 
+{
+    float:right;
+}
 
 
 
