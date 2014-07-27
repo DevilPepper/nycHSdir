@@ -1,3 +1,18 @@
+function showMenu($this) {
+    $('.search_criteria').show();
+    $('#filter_sections div').each(function () {
+        $(this).hide();
+    });
+    $('#filters li').each(function () {
+        $(this).removeClass('ui-selected');
+    });
+    $this.addClass('ui-selected');
+    var display = '.' + $this.attr('id');
+    $(display).show();
+    $(display + " *").show();
+}
+
+
 function collapse_search() {
     //alternates the +/- button text
     $('.collapsable button').text(function () {
@@ -29,7 +44,7 @@ function getQuery($this)
     var select = "(";
     var query = "";
     //each option that was selected
-    $this.find('option:selected').each(function () {
+    $this.find('input:checked').each(function () {
         //create a filter for it and append with OR for next filter in this section
         select += filter + "='" + $(this).attr('value') + "' OR ";
     });

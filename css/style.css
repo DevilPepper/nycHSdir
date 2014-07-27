@@ -1,6 +1,6 @@
 body
 {
-	background-color: black;
+    background-color:black;
 	color: white;
 }
 
@@ -27,13 +27,14 @@ body
 {
     float:left;
     display: inline;
+    background: rgba(0, 0, 0, 0.9);
 }
 
 #main_right 
 {
     display: inline;
     float:right;
-	background-color: black;
+    background: rgba(0, 0, 0, 0.9);
 	color: white;
 }
 
@@ -302,8 +303,19 @@ margin-top:5%;
     top:0;
 }
 
+label {
+ border:1px solid #ccc;
+ padding:10px;
+ display:block; 
+}
+label:hover {
+ background:#000000;
+ cursor:pointer;
+}
+
 #feedback span 
 {
+    visibility:hidden;
     float:right;
 }
 

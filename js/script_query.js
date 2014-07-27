@@ -1,6 +1,4 @@
-$(document).on('click', '#showResults', function () {
-    //collapse_search();
-    $('.search_criteria').hide("explode");
+$(document).on('click', 'label', function () {
     var nycITTsql = '';
     currPage = 1;
     currPage2 = 1;
@@ -123,8 +121,7 @@ $(document).on('click', '#showResults', function () {
 
         //show results
         renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', parseSODA, currPage, perPage);
-        $('.search_results').show();
-
+        
         //drop pins for each result
         //if only I could unnest this
         $.each(parseSODA, function (i, entry) {

@@ -8,19 +8,17 @@ $(document).on('mouseleave', '.image', function () {
     $(this).width("32px");
 });
 
+$(document).on('click', '#sidebar h3', function () {
+    //collapse_search();
+    $('.search_criteria').hide("explode");
+    //$('.search_results').show();
+});
 
 $(document).on('mouseenter', '#filters li', function () {
-    $('.search_criteria').show();
-    $('#filter_sections div').each(function () {
-        $(this).hide();
-    });
-    $('#filters li').each(function () {
-        $(this).removeClass('ui-selected');
-    });
-    $(this).addClass('ui-selected');
-    var display = '.' + $(this).attr('id');
-    $(display).show();
-    $(display + " *").show();
+    showMenu($(this));
+});
+$(document).on('click', '#filters li', function () {
+    showMenu($(this));
 });
 
 //when you click on the name text in the results, this happens

@@ -1,0 +1,76 @@
+﻿<html>
+<head>
+    <title>nycHSdir</title>
+	
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+    <script src="js/jquery.xdomainajax.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+
+	<script type="text/javascript">
+	    $(document).ready(function () {
+	        // Construct the catalog query string
+
+
+	        url = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?$select=dbn,urls&$$app_token=CGxaHQoQlgQSev4zyUh5aR5J3';
+
+	        $.getJSON(url, function (data, textstatus) {
+	            var url = [];
+	            var dbn = [];
+	            $.each(data, function (i, entry) {
+	                if ($.inArray(entry.dbn, dbn) == -1)
+	                {
+	                    dbn.push(entry.dbn);
+	                    url.push(entry);
+	                }
+	            });
+                
+	            $.each(url, function (i, entry) {
+	                
+	                var jqxhr = $.get(entry.urls + "#HSDIRBookControl1_SchoolGeneralInformation1_lblAddress")
+                        .done(function () {
+                            var msg = entry.dbn + " does have this crazy id";
+                            $("#success ol").append("<li>" + msg + "</li>");
+                        })
+                        .fail(function () {
+                            var msg = entry.dbn + " doesn't have this crazy id";
+                            $("#error ol").append("<li>" + msg + "</li>");
+                        });
+                    
+	            
+                    /*
+	                $("#success").load(entry.urls + "#HSDIRBookControl1_SchoolGeneralInformation1_lblAddress", function (response, status, xhr) {
+	                    if (status == "error") {
+	                        var msg = entry.dbn + " doesn't have this crazy id";
+	                        $("#error ol").append("<li>" + msg + "</li>");
+	                    }
+	                });
+                    */
+                    
+	            });
+	            console.log(url);
+
+	        });
+	    });
+    </script>	
+    <style type="text/css">
+        #error 
+        {
+            border-right:solid;
+            float:left;
+        }
+        #success 
+        {
+            border-left:solid;
+            float:right;
+        }
+    </style>
+</head>
+	<body>
+		<div id="success"><ol></ol></div>
+        <div id="error"><ol></ol></div>
+	</body>
+</html>
