@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     //initialize Parse db. class="doe"
     Parse.initialize("MtPQsRRglfpClARD9Gskmv7rdkvUaMCHHJ2G90Ri", "QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC");
-    doedb = Parse.Object.extend("doe");
+    doedb = Parse.Object.extend("HSProgress");
 
     //not sure when this is needed //never
     //var parsekey = 'QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC';

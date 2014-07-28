@@ -1,3 +1,4 @@
+//$(document).on('click', '#showResults', function () {
 $(document).on('click', 'label', function () {
     var nycITTsql = '';
     currPage = 1;
@@ -48,9 +49,13 @@ $(document).on('click', 'label', function () {
         $(this).find('input:text').each(function () {
             er = $(this).val();
         });
+        $(this).find('input:checked').each(function () {
+            er = $(this).val();
+        });
         //if user entered a filter, use it.
         if (er.length > 0) parseQuery.equalTo(filt, er);
     });
+    //parseQuery.select(['dbn', 'collegeandcareerreadinessgrade', 'postsecondaryenrollmentrate18months']);
     parseQuery.limit(458); //default is 100...
     //////////////////////////////////////////////////////////////////////////////////////////
 
@@ -92,10 +97,10 @@ $(document).on('click', 'label', function () {
                     //from current parse object
                     dbn: parseEX.attributes.dbn,
                     principal: parseEX.attributes.principal,
-                    postsecondary_enrollment: parseEX.attributes.postsecondaryenrollmentrate18months,
-                    college_readiness: parseEX.attributes.collegeandcareerreadinessgrade,
-                    overall: parseEX.attributes.overallgrade,
-                    attendance: parseEX.attributes.attendancerate,
+                    postsecondary_enrollment: parseEX.attributes.postsecondary_enrollment_rate_18months,
+                    college_readiness: parseEX.attributes.college_and_career_readiness_grade,
+                    overall: parseEX.attributes.overall_grade,
+                    attendance: parseEX.attributes.attendance_rate,
 
                     //from the last socrata object that match this parse object's dbn
                     //(these are all the same if they have the same dbn)
@@ -109,6 +114,7 @@ $(document).on('click', 'label', function () {
 
                 liteSODA = null;
             }
+            else console.log(parseEX.attributes);
             //nullify these temp arrays and object to clear memory
             multiple = null;
             program = null;
