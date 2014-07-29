@@ -40,6 +40,8 @@ $(document).ready(function () {
         map: map
     });
 
+    //console.log(doeBoundaries);
+
 
     //new geocoder
     geocoder = new google.maps.Geocoder();
@@ -52,10 +54,30 @@ $(document).ready(function () {
     $('.more_info').hide();
     $('.search_criteria').hide();
 
+    circle = new google.maps.Circle({
+        strokeColor: "#00FF00",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#0000FF",
+        fillOpacity: 0.35,
+        map: map,
+        radius: 500
+    });
+
     //make these things special
     $('#sidebar').accordion({ collapsible: true });
     $('#filters').selectable();
-
+    $('#myRadius').slider({
+        range: "min",
+        max: 10000,
+        min: 500,
+        value: 500,
+        step: 0.5,
+        orientation: "horizontal",
+        slide: function (event, ui) {
+            updateRadius(circle, ui.value);
+        }
+    });
 
 
     //these are for jquery-loadTemplate.js

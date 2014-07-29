@@ -40,18 +40,16 @@
 	            }
 
 	        });
-	        schoolData = Parse.Object.extend("schoolData");
-
+	        
 	        
 	        var dist = [];
 	        var geo = [];
 	        var dbns = [];
 
-	        var q1 = new Parse.Query(schoolData).equalTo('location_category', 'High school');
-	        var q2 = new Parse.Query(schoolData).equalTo('location_category', 'Ungraded');
-	        var q3 = new Parse.Query(schoolData).equalTo('location_category', 'K-12 all grades');
-
-	        var parseQuery2 = Parse.Query.or(q1, q2, q3);
+	        schoolData = Parse.Object.extend("schoolData");
+	        
+	        var parseQuery2 = new Parse.Query(schoolData);
+	        parseQuery2.containedIn("location_category", ['High school', 'Ungraded', 'K-12 all grades']);
 	        parseQuery2.select(['administrative_district_code', 'geographical_district_code', 'location_category', 'dbn']);
 
 	        parseQuery2.limit(2000); //default is 100...
@@ -88,8 +86,8 @@
                     });
                     $('div').append('</br></br>');
                 });
-            }
 
+            }
 </script>	
 </head>
 	<body>

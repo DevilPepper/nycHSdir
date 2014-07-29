@@ -62,3 +62,7 @@ function renderTemplates($dest, tmpl, data, pageNo, perPage) {
     //it then sets the data in place very nicely.
     $dest.loadTemplate(tmpl, data, { isFile: true, paged: true, pageNo: pageNo, elemPerPage: perPage });
 }
+
+function updateRadius(circle, rad) {
+    circle.setRadius(rad);
+}

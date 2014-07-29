@@ -23,3 +23,7 @@ var map;
 
 //new geocoder
 var geocoder;
+
+var myPlace;
+
+var circle;

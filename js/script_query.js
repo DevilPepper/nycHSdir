@@ -1,5 +1,10 @@
 //$(document).on('click', '#showResults', function () {
-$(document).on('click', 'label', function () {
+$(document).on('change', 'label :checkbox', function () {
+    refreshResults();
+});
+
+function refreshResults()
+{
     var nycITTsql = '';
     currPage = 1;
     currPage2 = 1;
@@ -56,17 +61,29 @@ $(document).on('click', 'label', function () {
         if (er.length > 0) parseQuery.equalTo(filt, er);
     });
     //parseQuery.select(['dbn', 'collegeandcareerreadinessgrade', 'postsecondaryenrollmentrate18months']);
+    //parseQuery.greaterThan('postsecondary_enrollment_rate_18months', '85%');
     parseQuery.limit(458); //default is 100...
     //////////////////////////////////////////////////////////////////////////////////////////
 
-    var querying = $.when($.getJSON(nycITTurl), parseQuery.find().toJqueryPromise());
+
+    schoolData = Parse.Object.extend("schoolData");
+
+    var parseQuery2 = new Parse.Query(schoolData);
+    parseQuery2.containedIn("location_category", ['High school', 'Ungraded', 'K-12 all grades']);
+    parseQuery2.limit(503);
+
+    var querying = $.when($.getJSON(nycITTurl), parseQuery.find().toJqueryPromise(), parseQuery2.find().toJqueryPromise());
     
 
     //////////////////////////////////RESULTS ARE IN/////////////////////////////////////////
-    querying.done(function (searchResults, parsedb) {
+    querying.done(function (searchResults, parsedb, schoolDat) {
         searchResults = searchResults[0];
+        console.log('program data');
         console.log(searchResults);
+        console.log('progress report');
         console.log(parsedb);
+        console.log('more school data');
+        console.log(schoolDat);
         
 
         //monster fusion
@@ -76,9 +93,11 @@ $(document).on('click', 'label', function () {
 
             //get all socrata objects that match this parse object's dbn
             var multiple = $.grep(searchResults, function (dietSODA) { return dietSODA.dbn == parseEX.attributes.dbn; });
+            var parseSchool = $.grep(schoolDat, function (dietSODA) { return dietSODA.attributes.dbn == parseEX.attributes.dbn; });
+            
+            var liteSODA = null; //for some reason I need this
             if (multiple.length > 0) {
-                var liteSODA; //for some reason I need this
-
+                
                 //go through each socrata object that was gotten
                 $.each(multiple, function (y, dietSODA) {
                     liteSODA = dietSODA; //hold one of these socrata objects for later use (very soon)
@@ -91,7 +110,9 @@ $(document).on('click', 'label', function () {
                         selection_method: dietSODA.selection_method
                     });
                 });
-
+            }
+            if((liteSODA != null) && parseSchool.length > 0)
+            {
                 //finally, make this object that holds all the data that is necessary
                 parseSODA.push({
                     //from current parse object
@@ -102,6 +123,10 @@ $(document).on('click', 'label', function () {
                     overall: parseEX.attributes.overall_grade,
                     attendance: parseEX.attributes.attendance_rate,
 
+                    //from school data
+                    latitude: parseSchool[0].attributes.latitude,
+                    longitude: parseSchool[0].attributes.longitude,
+
                     //from the last socrata object that match this parse object's dbn
                     //(these are all the same if they have the same dbn)
                     printed_school_name: liteSODA.printed_school_name,
@@ -111,15 +136,16 @@ $(document).on('click', 'label', function () {
                     //the temp array goes here. Each program the school offers has it's own object.
                     programs: program
                 });
-
-                liteSODA = null;
             }
-            else console.log(parseEX.attributes);
+            //else console.log(parseEX.attributes);
+            liteSODA = null;
+            
             //nullify these temp arrays and object to clear memory
             multiple = null;
             program = null;
         });
 
+        console.log('merged data');
         console.log(parseSODA); //for debugging
 
         //calculate the last page of results
@@ -131,25 +157,20 @@ $(document).on('click', 'label', function () {
         //drop pins for each result
         //if only I could unnest this
         $.each(parseSODA, function (i, entry) {
-            geocoder.geocode({
-                'address': entry.printed_school_name
-            }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
+           
                     //map.setCenter(results[0].geometry.location);
 
                     var marker = new google.maps.Marker({
                         map: map,
-                        position: results[0].geometry.location,
+                        position: new google.maps.LatLng(entry.latitude, entry.longitude),
                         //title: location.name
                         title: entry.printed_school_name
                     });
                     overlays.push(marker); //store marker so it can be deleted later
-                }
-            });
         });
 
     });
     //////////////////////////////////////////////////////////////////////////////////////////
 
     nycITTurl = null;
-});
+}
