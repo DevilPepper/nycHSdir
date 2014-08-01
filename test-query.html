@@ -1,0 +1,151 @@
+﻿<html>
+<head>
+    <title>nycHSdir</title>
+	
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+	
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.js"></script>
+    <script src="js/jquery-loadTemplate.js"></script>
+    <script src="js/parse.js"></script>
+    <script src="js/script_prototype.js"></script>
+    <script src="js/script_funct.js"></script>
+	<script type="text/javascript">
+	    $(document).ready(function () {
+	        // Construct the catalog query string
+	        url = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?$$app_token=CGxaHQoQlgQSev4zyUh5aR5J3';
+	        Parse.initialize("MtPQsRRglfpClARD9Gskmv7rdkvUaMCHHJ2G90Ri", "QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC");
+	        doedb = Parse.Object.extend("HSProgress");
+
+	        var qdoe = new Parse.Query(doedb);
+	        var college = [];
+	        var post = [];
+
+	        qdoe.limit(1000); //default is 100... max is 1000...
+
+
+
+	        var schoolData = Parse.Object.extend("schoolData");
+            var qDat = new Parse.Query(schoolData);
+	        qDat.containedIn("location_category", ['High school', 'Ungraded', 'K-12 all grades']);
+	        //qDat.select(['administrative_district_code', 'geographical_district_code', 'location_category', 'dbn']);
+
+	        qDat.limit(1000); //default is 100... max is 1000...
+	        var qing = $.when($.getJSON(url), qdoe.find().toJqueryPromise(), qDat.find().toJqueryPromise());
+	        qing.done(function (searchResults, parsedb, schoolDat) {
+	            console.log(searchResults);
+	            searchResults = searchResults[0];
+	            console.log('program data');
+	            console.log(searchResults);
+	            console.log('progress report');
+	            console.log(parsedb);
+	            console.log('more school data');
+	            console.log(schoolDat);
+
+	            var noMatch = [];
+	            var dat = 'test_dat_tmpl.html';
+	            var soda = 'test_soda_tmpl.html';
+	            var parsley = 'test_parse_tmpl.html';
+	            noMatch = speedDating(searchResults, parsedb, 'sodaVparse', soda,
+                    'These programs from socrata\'s db don\'t have a school found in the progress report', false);
+
+	            speedDating(schoolDat, noMatch, 'datVmatch', dat,
+                    'These programs that had no matching schools were found in the school data spreadsheet', true);
+
+	            speedDating(noMatch, schoolDat, 'matchVdat', soda,
+                    'These programs that had no matching schools were also not found in the school data spreadsheet', false);
+
+	            noMatch = [];
+
+	            noMatch = speedDating(parsedb, searchResults, 'parseVsoda', parsley,
+                    'These programs from socrata\'s db don\'t have a school found in the progress report', false);
+
+	            speedDating(schoolDat, noMatch, 'datVmatch2', dat,
+                    'These schools that had no matching programs were found in the school data spreadsheet', true);
+
+	            speedDating(noMatch, schoolDat, 'match2Vdat', parsley,
+                    'These schools that had no matching programs were also not found in the school data spreadsheet', false);
+
+	            noMatch = [];
+
+	            noMatch = speedDating(schoolDat, searchResults, 'datVsoda', dat, 'dat & !soda', false);
+	            speedDating(noMatch, parsley, 'matchVparse', dat, '(dat & !soda) & !parsley', false);
+	            speedDating(searchResults, schoolDat, 'sodaVdat', soda, 'soda & !dat', false);
+
+	            noMatch = [];
+	            speedDating(schoolDat, parsedb, 'datVparse', dat, 'dat & !parsley', false);
+	            noMatch = speedDating(parsedb, schoolDat, 'parseVdat', parsley, 'parsley & !dat', false);
+	            speedDating(noMatch, searchResults, 'matchVsoda', parsley, '(parsley & !dat) & !soda', false);
+
+	            noMatch = [];
+	            noMatch = speedDating(schoolDat, searchResults, 'datASoda', dat, 'dat & soda', true);
+	            speedDating(noMatch, parsedb, 'notParsley', dat, '(dat & soda) & !parsley', false);
+
+	            noMatch = [];
+	            noMatch = speedDating(schoolDat, parsedb, 'datAParse', dat, 'dat & parsley', true);
+	            speedDating(noMatch, searchResults, 'notSoda', dat, '(dat & parsley) & !soda', false);
+
+	            noMatch = [];
+	            noMatch = speedDating(parsedb, searchResults, 'parseASoda', parsley, 'parsley & soda', true);
+	            speedDating(noMatch, searchResults, 'notDat', parsley, '(parsley & soda) & !dat', false);
+
+	        });
+	    });
+
+	    function speedDating(data1, data2, elemID, tmpl, txt, matched)
+	    {
+	        var array = [];
+	        console.log('\n');
+	        console.log(txt);
+	        var unique = [];
+	        var udbn = [];
+	        $.each(data1, function (i, entry) {
+	            if (entry.hasOwnProperty('attributes')) {
+	                if ($.inArray(entry.attributes.dbn, unique) == -1) {
+	                    unique.push(entry);
+	                    udbn.push(entry.attributes.dbn);
+	                }
+	            }
+	            else {
+	                if ($.inArray(entry.dbn, unique) == -1) {
+	                    unique.push(entry);
+	                    udbn.push(entry.dbn);
+	                }
+	            }
+	        });
+	        $.each(unique, function (x, dietSODA) {
+	            //get all socrata objects that match this parse object's dbn
+	            var multiple = $.grep(data2, function (parseEX) {
+	                if (parseEX.hasOwnProperty('attributes')) {
+	                    if (dietSODA.hasOwnProperty('attributes')) return parseEX.attributes.dbn == dietSODA.attributes.dbn;
+	                    else return parseEX.attributes.dbn == dietSODA.dbn;
+	                }
+	                else {
+	                    if (dietSODA.hasOwnProperty('attributes')) return parseEX.dbn == dietSODA.attributes.dbn;
+	                    else return parseEX.dbn == dietSODA.dbn;
+	                }
+	            });
+	            if (matched) {
+	                if (multiple.length > 0) {
+	                    array.push(dietSODA);
+	                }
+	            }
+	            else
+	            {
+	                if (multiple.length <= 0) {
+	                    array.push(dietSODA);
+	                }
+	            }
+	        });
+	        console.log(array);
+	        $('#that').append('<hr /><hr /><hr /><hr /><hr /><hr /><hr /><p>' + txt + '</p><div id="' + elemID + '"></div>');
+	        renderTemplates($('#' + elemID), tmpl, array, 1, 100);
+	        return array;
+	    }
+</script>	
+</head>
+	<body>
+        <div id="that"></div>
+	</body>
+</html>

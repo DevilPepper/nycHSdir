@@ -1,3 +1,4 @@
+@media screen {
 body
 {
     background-color:black;
@@ -305,6 +306,7 @@ margin-top:5%;
 
 label {
  border:1px solid #ccc;
+ border-radius:50%;
  padding:10px;
  display:block; 
 }
@@ -341,3 +343,23 @@ label:hover {
 	height: 16px;
 	font-family: Verdana, Arial, Sans-Serif;
   }
+  }
+  @media print {
+   body
+{
+    background-color:black;
+	color: black;
+}
+
+   .result_wrapper {
+	border: 1px solid gray;
+	padding: 5pt;
+	margin-top: 10px;
+	width: auto;
+	display: block;
+    /*overflow-y:scroll;*/
+    border-color:#ff9900;
+    font-family:sans-serif;
+}
+
+}

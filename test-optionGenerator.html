@@ -11,7 +11,7 @@
 	<script type="text/javascript">
 	    $(document).ready(function () {
 	        // Construct the catalog query string
-	        url = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?$select=interest_area,selection_method,borough,program_name&$$app_token=CGxaHQoQlgQSev4zyUh5aR5J3';
+	        url = 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?$select=interest_area,selection_method,borough,program_name,dbn&$$app_token=CGxaHQoQlgQSev4zyUh5aR5J3';
 
 	        $.getJSON(url, function (data, textstatus) {
 	            //console.log(data);
@@ -19,8 +19,8 @@
 	            var admissionrq = [];
 	            var program = [];
 	            var borough = [];
-	            var urls;
-	            makeElementText(data, [interest, admissionrq, program, borough], ['interest_area', 'selection_method', 'program_name', 'borough']);
+	            var dbnSODA = [];
+	            makeElementText(data, [interest, admissionrq, program, borough, dbnSODA], ['interest_area', 'selection_method', 'program_name', 'borough', 'dbn']);
 	        });
 
 	        //initialize Parse db. class="doe"

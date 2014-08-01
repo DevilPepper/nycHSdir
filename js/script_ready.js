@@ -35,11 +35,12 @@ $(document).ready(function () {
     map = new google.maps.Map($('#map').get(0), mapOptions); //puts a new map in #map, applies some options, and also stores it in a variable
 
     //Add KML boundaries
+    /*
     var doeBoundaries = new google.maps.KmlLayer({
         url: doeDistrictsKML,
         map: map
     });
-
+    */
     //console.log(doeBoundaries);
 
 

@@ -10,10 +10,23 @@
 
 	<script type="text/javascript">
 	    $(document).ready(function () {
-	        $.getJSON("https://data.cityofnewyork.us/api/views/bntt-wmh5/rows.json?", function (json, e) {
+	        $.get("xml/test.xml", function (json, e) {
 	            console.log(json);
+	            var $xml = $(json);
+	            console.log($xml);
+	        });
+	        checkid($('body'));
+	        $('body div').each(function () {
+	            checkid($(this));
 	        });
 	    });
+
+	    function checkid($this) {
+	        if (stuff = $this.attr('id')) {
+	            console.log(stuff);
+	        }
+	        else console.log('hadouken');
+	    }
     </script>	
     <style type="text/css">
         #error 

@@ -66,3 +66,14 @@ function renderTemplates($dest, tmpl, data, pageNo, perPage) {
 function updateRadius(circle, rad) {
     circle.setRadius(rad);
 }
+
+function displayXML(XMLement) {
+    if (elemID = XMLement.attr('id'))
+    {
+        $("#" + elemID).each(function () {
+            if ($(this).is('input')) $(this).text(XMLement.text());
+            $(this).text(XMLement.text());
+        });
+    }
+    XMLement.children().each(displayXML)
+}
