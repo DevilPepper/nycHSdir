@@ -35,9 +35,6 @@ body
 {
     display: inline;
     float:right;
-    background: rgba(0, 0, 0, 0.8);
-    /*background: rgba(196, 216, 235, 0.8);*/
-	color: white;
 }
 
 #sidebar 
@@ -191,7 +188,7 @@ div.nycDOE
     height: 30em;
 }
 
-.search_results, .collapsable, .more_info
+.search_results, .collapsable, .more_info, #main_right
 {
     background-color:black;
     color:white;
@@ -204,6 +201,10 @@ div.nycDOE
     filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000);
     /* For IE 8*/
     -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#99000000, endColorstr=#99000000)";
+}
+.search_results, .collapsable, .more_info
+{
+    position:fixed;
 }
 
 /*print_templ*/
