@@ -12,7 +12,6 @@
     <script src="//www.parsecdn.com/js/parse-1.2.19.min.js"></script>
 
     <script type="text/javascript" src="js/script_prototype.js"></script>
-    <script type="text/javascript" src="js/script_global.js"></script>
     <script type="text/javascript" src="js/script_funct.js"></script>
     <script type="text/javascript" src="js/script_ready.js"></script>
     <script type="text/javascript" src="js/script_on.js"></script>
@@ -24,7 +23,7 @@
 		<div id="main">
             <div id="main_left">
             <div id="sidebar">
-        <h3>Filters</h3>
+        <h3 id="txtFilter">Filters</h3>
         <div>
             <ol id="filters">
                 <li id="location">Location</li>
@@ -38,7 +37,7 @@
                 <div class="result_wrapper"></div>
                 <button id="prevPage">Previous</button>
                 <button id="nextPage">Next</button>
-                <button class="printIt">Print Results</button>
+                <button id="txtPrint" class="printIt">Print Results</button>
 			</div>
         </div>
         </div>
@@ -50,7 +49,7 @@
                 <div id="filter_sections">
                 <div class="nycITT">
 				    <div id="interest_area">
-				        <p><img class="image" src="img/one.png"  alt="First Step">Select your interests <br/><em>Use Ctrl (or Cmd) to select multiple</em></p>
+				        <p id="txtInterest">Select your interests <br/><em>Use Ctrl (or Cmd) to select multiple</em></p>
 			            
                         <label><input type="checkbox" value="Animal Science" />Animal Science</label>
                         <label><input type="checkbox" value="Architecture" />Architecture</label>
@@ -76,7 +75,7 @@
 				    </div>
 			
 				    <div id="selection_method">
-				        <p><img class="image" src="img/two.png" alt="Second Step">Select Other Admission Requirements</p>
+				        <p id="txtAdmission">Select Other Admission Requirements</p>
 			
                         <label><input type="checkbox" value="Audition" />Audition</label>
                         <label><input type="checkbox" value="Ed. Opt." />Ed. Opt.</label>
@@ -95,12 +94,12 @@
 
                 <div class="location">
                     <div id="myPlace">
-                        <label>Start location: <input type="text"/></label>
-                        <input type="button" value="Use this address" />
-                        Distance from house:<br /><div id="myRadius"></div>
+                        <label id="txtAddy">Start location: <input type="text"/></label>
+                        <input id="btnAddy" type="button" value="Use this address" />
+                        <p id="txtRadius">Distance from house:<br /><div id="myRadius"></div></p>
                     </div>
                     <div id="borough">
-				        <p><img class="image" src="img/three.png" alt="Third Step"> Select Borough Preferences</p>
+				        <p id="txtBoro">Select Borough Preferences</p>
 			
                         <label><input type="checkbox" value="Bronx" />Bronx</label>
                         <label><input type="checkbox" value="Brooklyn" />Brooklyn</label>
@@ -108,49 +107,46 @@
                         <label><input type="checkbox" value="Queens" />Queens</label>
                         <label><input type="checkbox" value="Staten Island" />Staten Island</label>
 				    </div>
-                    <div id="administrative_district_code">
-                        <p>Select District Preferences</p>
-                        <label><input type="checkbox" value="1" />1</label>
-                        <label><input type="checkbox" value="2" />2</label>
-                        <label><input type="checkbox" value="3" />3</label>
-                        <label><input type="checkbox" value="4" />4</label>
-                        <label><input type="checkbox" value="5" />5</label>
-                        <label><input type="checkbox" value="6" />6</label>
-                        <label><input type="checkbox" value="7" />7</label>
-                        <label><input type="checkbox" value="8" />8</label>
-                        <label><input type="checkbox" value="9" />9</label>
-                        <label><input type="checkbox" value="10" />10</label>
-                        <label><input type="checkbox" value="11" />11</label>
-                        <label><input type="checkbox" value="12" />12</label>
-                        <label><input type="checkbox" value="13" />13</label>
-                        <label><input type="checkbox" value="14" />14</label>
-                        <label><input type="checkbox" value="15" />15</label>
-                        <label><input type="checkbox" value="16" />16</label>
-                        <label><input type="checkbox" value="17" />17</label>
-                        <label><input type="checkbox" value="18" />18</label>
-                        <label><input type="checkbox" value="19" />19</label>
-                        <label><input type="checkbox" value="20" />20</label>
-                        <label><input type="checkbox" value="21" />21</label>
-                        <label><input type="checkbox" value="22" />22</label>
-                        <label><input type="checkbox" value="23" />23</label>
-                        <label><input type="checkbox" value="24" />24</label>
-                        <label><input type="checkbox" value="25" />25</label>
-                        <label><input type="checkbox" value="26" />26</label>
-                        <label><input type="checkbox" value="27" />27</label>
-                        <label><input type="checkbox" value="28" />28</label>
-                        <label><input type="checkbox" value="29" />29</label>
-                        <label><input type="checkbox" value="30" />30</label>
-                        <label><input type="checkbox" value="31" />31</label>
-                        <label><input type="checkbox" value="32" />32</label>
-                        <label><input type="checkbox" value="75" />75</label>
-                        <label><input type="checkbox" value="84" />84</label>
+                    <div id="geographical_district_code">
+                        <p id="txtDistrict">Select District Preferences</p>
+                            <label><input type="checkbox" value="1" />1</label>
+                            <label><input type="checkbox" value="2" />2</label>
+                            <label><input type="checkbox" value="3" />3</label>
+                            <label><input type="checkbox" value="4" />4</label>
+                            <label><input type="checkbox" value="5" />5</label>
+                            <label><input type="checkbox" value="6" />6</label>
+                            <label><input type="checkbox" value="7" />7</label>
+                            <label><input type="checkbox" value="8" />8</label>
+                            <label><input type="checkbox" value="9" />9</label>
+                            <label><input type="checkbox" value="10" />10</label>
+                            <label><input type="checkbox" value="11" />11</label>
+                            <label><input type="checkbox" value="12" />12</label>
+                            <label><input type="checkbox" value="13" />13</label>
+                            <label><input type="checkbox" value="14" />14</label>
+                            <label><input type="checkbox" value="15" />15</label>
+                            <label><input type="checkbox" value="16" />16</label>
+                            <label><input type="checkbox" value="17" />17</label>
+                            <label><input type="checkbox" value="18" />18</label>
+                            <label><input type="checkbox" value="19" />19</label>
+                            <label><input type="checkbox" value="20" />20</label>
+                            <label><input type="checkbox" value="21" />21</label>
+                            <label><input type="checkbox" value="22" />22</label>
+                            <label><input type="checkbox" value="23" />23</label>
+                            <label><input type="checkbox" value="24" />24</label>
+                            <label><input type="checkbox" value="25" />25</label>
+                            <label><input type="checkbox" value="26" />26</label>
+                            <label><input type="checkbox" value="27" />27</label>
+                            <label><input type="checkbox" value="28" />28</label>
+                            <label><input type="checkbox" value="29" />29</label>
+                            <label><input type="checkbox" value="30" />30</label>
+                            <label><input type="checkbox" value="31" />31</label>
+                            <label><input type="checkbox" value="32" />32</label>
                     </div>
                 </div>
                 
                 <div class="nycDOE">
                     <div id="college_and_career_readiness_grade">
-                        <p class="dropdown2"><img class="image" src="img/four.png" alt="Fourth Step">
-                        How important is college readiness? (A-F) </p>
+                        <p id="txtCollegeReady">How important is college readiness? (A-F) </p>
                         <label><input type="checkbox" value="A" />A</label>
                         <label><input type="checkbox" value="B" />B</label>
                         <label><input type="checkbox" value="C" />C</label>
@@ -160,8 +156,7 @@
                     </div>
                
                     <div id="postsecondary_enrollment_rate_18months">
-                        <p class="dropdown2">
-                        What is a minimum acceptable percentage of post-secondary enrollment? <br />
+                        <p id="txtPost2nd18">What is a minimum acceptable percentage of post-secondary enrollment? <br />
                         <input type="text" class="postsecondaryenrollmentrate18monthsinput"/></p>
                     </div>
                 </div>
@@ -181,7 +176,7 @@
                 <button id="next2">Next</button>
 			</div>
         <div id="feedback">Have suggestions? Feedback will be very appreciated. <a href="mailto:myFutureHS@googlegroups.com">Send Feedback</a>
-            <span><a href="https://037003f704f55811fd4c34497d1a0111c98fa528.googledrive.com/host/0B5RoiK48_WysVFJKSVZ4cTJLVWc/index.html">Go here while I fix this</a></span>
+            <span><a href="https://037003f704f55811fd4c34497d1a0111c98fa528.googledrive.com/host/0B5RoiK48_WysVFJKSVZ4cTJLVWc/index.html">_</a></span>
         </div>
 	</body>
 </html>

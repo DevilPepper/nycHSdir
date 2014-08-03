@@ -68,7 +68,8 @@ function updateRadius(circle, rad) {
 }
 
 function displayXML(XMLement) {
-    if (elemID = XMLement.attr('id'))
+    var elemID = XMLement.attr('id');
+    if (elemID!=null)
     {
         $("#" + elemID).each(function () {
             if ($(this).is('input')) $(this).text(XMLement.text());

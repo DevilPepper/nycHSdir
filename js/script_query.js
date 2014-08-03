@@ -1,21 +1,22 @@
 //$(document).on('click', '#showResults', function () {
 $(document).on('change', 'label :checkbox', function () {
+    stuff.parseInit();
     refreshResults();
 });
 
 function refreshResults()
 {
     var nycITTsql = '';
-    currPage = 1;
-    currPage2 = 1;
+    stuff.currPage = 1;
+    stuff.currPage2 = 1;
 
     //while there are still pins on the map, remove them from the map and the array
-    while (overlays[0]) {
-        overlays.pop().setMap(null);
+    while (stuff.overlays[0]) {
+        stuff.overlays.pop().setMap(null);
     }
 
     //clear old results, if any
-    parseSODA = [];
+    stuff.parseSODA = [];
 
     ///////////////////////////////////SOCRATA////////////////////////////////////////////////
     //set up socrata query
@@ -26,7 +27,7 @@ function refreshResults()
         query = null;
     });
     //this is the query url
-    var nycITTurl = nycITTdb;
+    var nycITTurl = stuff.nycITTdb;
     //if user selected options
     if (nycITTsql.length > 0) {
         //first, remove the extra AND
@@ -35,9 +36,9 @@ function refreshResults()
         nycITTurl += "$where=" + nycITTsql;
     }
     //we're only interested in some columns
-    nycITTurl += nycITTsel;
+    nycITTurl += stuff.nycITTsel;
     //and last but not least, the application key
-    nycITTurl += nycITTkey;
+    nycITTurl += stuff.nycITTkey;
 
     console.log(nycITTurl);
     //////////////////////////////////////////////////////////////////////////////////////////
@@ -45,7 +46,7 @@ function refreshResults()
 
     /////////////////////////////////////PARSE////////////////////////////////////////////////
     //set up the query for parse.com
-    var parseQuery = new Parse.Query(doedb);
+    var parseQuery = new Parse.Query(stuff.doedb);
 
     //more filters for parse.com
     $('.nycDOE div').each(function () {
@@ -66,9 +67,8 @@ function refreshResults()
     //////////////////////////////////////////////////////////////////////////////////////////
 
 
-    schoolData = Parse.Object.extend("schoolData");
 
-    var parseQuery2 = new Parse.Query(schoolData);
+    var parseQuery2 = new Parse.Query(stuff.schoolData);
     parseQuery2.containedIn("location_category", ['High school', 'Ungraded', 'K-12 all grades']);
     parseQuery2.limit(503);
 
@@ -114,7 +114,7 @@ function refreshResults()
             if((liteSODA != null) && parseSchool.length > 0)
             {
                 //finally, make this object that holds all the data that is necessary
-                parseSODA.push({
+                stuff.parseSODA.push({
                     //from current parse object
                     dbn: parseEX.attributes.dbn,
                     principal: parseEX.attributes.principal,
@@ -146,27 +146,27 @@ function refreshResults()
         });
 
         console.log('merged data');
-        console.log(parseSODA); //for debugging
+        console.log(stuff.parseSODA); //for debugging
 
         //calculate the last page of results
-        lastPage = Math.ceil(parseSODA.length / perPage);
+        stuff.lastPage = Math.ceil(stuff.parseSODA.length / stuff.perPage);
 
         //show results
-        renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', parseSODA, currPage, perPage);
+        renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', stuff.parseSODA, stuff.currPage, stuff.perPage);
         
         //drop pins for each result
         //if only I could unnest this
-        $.each(parseSODA, function (i, entry) {
+        $.each(stuff.parseSODA, function (i, entry) {
            
                     //map.setCenter(results[0].geometry.location);
 
                     var marker = new google.maps.Marker({
-                        map: map,
+                        map: stuff.map,
                         position: new google.maps.LatLng(entry.latitude, entry.longitude),
                         //title: location.name
                         title: entry.printed_school_name
                     });
-                    overlays.push(marker); //store marker so it can be deleted later
+                    stuff.overlays.push(marker); //store marker so it can be deleted later
         });
 
     });

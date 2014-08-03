@@ -38,21 +38,21 @@ $(document).on('click', '.xplode', function () {
 });
 
 $(document).on('click', '#myPlace :button', function () {
-    geocoder.geocode({
+    stuff.geocoder.geocode({
         'address': $('#myPlace :text').val()
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             //map.setCenter(results[0].geometry.location);
-            if (myPlace != null) myPlace.setMap(null);
-            myPlace = null;
-            myPlace = new google.maps.Marker({
-                map: map,
+            if (stuff.myPlace != null) stuff.myPlace.setMap(null);
+            stuff.myPlace = null;
+            stuff.myPlace = new google.maps.Marker({
+                map: stuff.map,
                 position: results[0].geometry.location,
                 //title: location.name
                 title: 'My Place',
                 icon: 'img/sandCastle.gif'
             });
-        circle.bindTo('center', myPlace, 'position');
+            stuff.circle.bindTo('center', stuff.myPlace, 'position');
         }
     });
 });
