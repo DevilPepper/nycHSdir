@@ -46,7 +46,7 @@ function getQuery($this)
     //each option that was selected
     $this.find('input:checked').each(function () {
         //create a filter for it and append with OR for next filter in this section
-        select += filter + "='" + $(this).attr('value') + "' OR ";
+        select += filter + "='" + $(this).attr('value').replace("&", "%26") + "' OR ";
     });
     //remove the extra OR
     select = select.slice(0, -4);
