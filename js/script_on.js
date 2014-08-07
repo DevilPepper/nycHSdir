@@ -34,25 +34,25 @@ $(document).on('click', '.collapsable button', function () {
 
 //classic x button with a twist
 $(document).on('click', '.xplode', function () {
-    $(this).parent().toggle("explode", { pieces: 36 });
+    $(this).parent().hide("explode", { pieces: 36 });
 });
 
-$(document).on('click', '#myPlace :button', function () {
-    stuff.geocoder.geocode({
+$(document).on('change', '#myPlace :text', function () {
+    myFutureHS.geocoder.geocode({
         'address': $('#myPlace :text').val()
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             //map.setCenter(results[0].geometry.location);
-            if (stuff.myPlace != null) stuff.myPlace.setMap(null);
-            stuff.myPlace = null;
-            stuff.myPlace = new google.maps.Marker({
-                map: stuff.map,
+            if (myFutureHS.myPlace != null) myFutureHS.myPlace.setMap(null);
+            myFutureHS.myPlace = null;
+            myFutureHS.myPlace = new google.maps.Marker({
+                map: myFutureHS.map,
                 position: results[0].geometry.location,
                 //title: location.name
                 title: 'My Place',
                 icon: 'img/sandCastle.gif'
             });
-            stuff.circle.bindTo('center', stuff.myPlace, 'position');
+            myFutureHS.circle.bindTo('center', myFutureHS.myPlace, 'position');
         }
     });
 });

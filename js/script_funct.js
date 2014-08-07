@@ -7,7 +7,7 @@ function showMenu($this) {
         $(this).removeClass('ui-selected');
     });
     $this.addClass('ui-selected');
-    var display = '.' + $this.attr('id');
+    var display = 'div.' + $this.attr('id');
     $(display).show();
     $(display + " *").show();
 }
@@ -67,7 +67,13 @@ function updateRadius(circle, rad) {
     circle.setRadius(rad);
 }
 
-function displayXML(XMLement) {
+function displayXML($XMLement) {
+    var XMLement = $($XMLement);
+
+    XMLement.children().each(function () {
+        displayXML($(this));
+    });
+    //console.log(XMLement);
     var elemID = XMLement.attr('id');
     if (elemID!=null)
     {
@@ -76,5 +82,10 @@ function displayXML(XMLement) {
             $(this).text(XMLement.text());
         });
     }
-    XMLement.children().each(displayXML)
+}
+
+function langChange(xml) {
+    $.get(xml, function (XEmL, e) {
+        displayXML(XEmL);
+    });
 }

@@ -1,16 +1,20 @@
-var stuff = {
+var myFutureHS = {
     //Parse db
     doedb: null,
     
     schoolData: null,
 
+    soda: null,
+
+    programs:null,
+
     //KML data for districts
-    doeDistrictsKML: 'https://data.cityofnewyork.us/api/geospatial/r8nu-ymqj?method=export&format=KML',
+    //doeDistrictsKML: 'https://data.cityofnewyork.us/api/geospatial/r8nu-ymqj?method=export&format=KML',
 
     //Socrata db
-    nycITTdb: 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?',
-    nycITTkey: '&$$app_token=CWamrEJN7KPGKA51TxJ4k9StU',
-    nycITTsel: '&$select=program_code,program_name,dbn,printed_school_name,interest_area,selection_method,borough,urls',
+    //nycITTdb: 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?',
+    //nycITTkey: '&$$app_token=CWamrEJN7KPGKA51TxJ4k9StU',
+    //nycITTsel: '&$select=program_code,program_name,dbn,printed_school_name,interest_area,selection_method,borough,urls',
 
     //map pins array
     overlays: [],
@@ -36,28 +40,29 @@ var stuff = {
     circle: null,
 
     genesis: function () {
+        //langChange('xml/test.xml');
 
         //not sure when this is needed //never
         //var parsekey = 'QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC';
 
         //map pins array
-        stuff.overlays = [];
+        myFutureHS.overlays = [];
         //final array of objects
-        stuff.parseSODA = [];
+        myFutureHS.parseSODA = [];
 
         //initialize current and last page and declare how many results should display at a time
-        stuff.currPage = 1;
-        stuff.currPage2 = 1;
-        stuff.lastPage = 1;
-        stuff.perPage = 4;
+        myFutureHS.currPage = 1;
+        myFutureHS.currPage2 = 1;
+        myFutureHS.lastPage = 1;
+        myFutureHS.perPage = 4;
 
         // Intialize our map
-        stuff.center = new google.maps.LatLng(40.7127, -74.0059);//NY latitute, longitude coordinates
-        stuff.mapOptions = {
+        myFutureHS.center = new google.maps.LatLng(40.7127, -74.0059);//NY latitute, longitude coordinates
+        myFutureHS.mapOptions = {
             zoom: 10,
-            center: stuff.center //??
+            center: myFutureHS.center //??
         };
-        stuff.map = new google.maps.Map($('#map').get(0), stuff.mapOptions); //puts a new map in #map, applies some options, and also stores it in a variable
+        myFutureHS.map = new google.maps.Map($('#map').get(0), myFutureHS.mapOptions); //puts a new map in #map, applies some options, and also stores it in a variable
 
         //Add KML boundaries
         /*
@@ -70,7 +75,7 @@ var stuff = {
 
 
         //new geocoder
-        stuff.geocoder = new google.maps.Geocoder();
+        myFutureHS.geocoder = new google.maps.Geocoder();
 
 
 
@@ -80,13 +85,13 @@ var stuff = {
         $('.more_info').hide();
         $('.search_criteria').hide();
 
-        stuff.circle = new google.maps.Circle({
+        myFutureHS.circle = new google.maps.Circle({
             strokeColor: "#00FF00",
             strokeOpacity: 0.8,
             strokeWeight: 2,
             fillColor: "#0000FF",
             fillOpacity: 0.35,
-            map: stuff.map,
+            map: myFutureHS.map,
             radius: 500
         });
 
@@ -101,7 +106,7 @@ var stuff = {
             step: 0.5,
             orientation: "horizontal",
             slide: function (event, ui) {
-                updateRadius(circle, ui.value);
+                updateRadius(myFutureHS.circle, ui.value);
             }
         });
 
@@ -140,32 +145,39 @@ var stuff = {
 
         //click events for next and previous buttons. They load next page of results
         $('#prevPage').click(function () {
-            if (stuff.currPage > 1) renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', stuff.parseSODA, --stuff.currPage, stuff.perPage);
+            if (myFutureHS.currPage > 1) renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', myFutureHS.parseSODA, --myFutureHS.currPage, myFutureHS.perPage);
         });
         $('#nextPage').click(function () {
-            if (stuff.currPage < stuff.lastPage) renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', stuff.parseSODA, ++stuff.currPage, stuff.perPage);
+            if (myFutureHS.currPage < myFutureHS.lastPage) renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', myFutureHS.parseSODA, ++myFutureHS.currPage, myFutureHS.perPage);
         });
         //these were rushed. I don't really want to rename them, though
         $('#previous2').click(function () {
-            if (stuff.currPage2 > 1) renderTemplates($('.print_wrapper'), 'print_tmpl.html', stuff.parseSODA, --stuff.currPage2, 1);
+            if (myFutureHS.currPage2 > 1) renderTemplates($('.print_wrapper'), 'print_tmpl.html', myFutureHS.parseSODA, --myFutureHS.currPage2, 1);
         });
         $('#next2').click(function () {
-            if (stuff.currPage2 < stuff.parseSODA.length) renderTemplates($('.print_wrapper'), 'print_tmpl.html', stuff.parseSODA, ++stuff.currPage2, 1);
+            if (myFutureHS.currPage2 < myFutureHS.parseSODA.length) renderTemplates($('.print_wrapper'), 'print_tmpl.html', myFutureHS.parseSODA, ++myFutureHS.currPage2, 1);
         });
         $('.printIT').click(function () {
-            renderTemplates($('.print_wrapper'), 'print_tmpl.html', stuff.parseSODA, stuff.currPage2, 1);
+            renderTemplates($('.print_wrapper'), 'print_tmpl.html', myFutureHS.parseSODA, myFutureHS.currPage2, 1);
             $('.more_info').show();
         });
     },
 
     parseInit: function () {
-        if (stuff.doedb == null || stuff.schoolData == null) {
+        if (myFutureHS.doedb == null || myFutureHS.schoolData == null) {
             //initialize Parse db
             Parse.initialize("MtPQsRRglfpClARD9Gskmv7rdkvUaMCHHJ2G90Ri", "QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC");
-            stuff.doedb = Parse.Object.extend("HSProgress");
-            stuff.schoolData = Parse.Object.extend("schoolData");
+            myFutureHS.doedb = Parse.Object.extend("HSProgress");
+            myFutureHS.schoolData = Parse.Object.extend("schoolData");
+        }
+    },
+
+    sodaInit: function () {
+        if (myFutureHS.soda == null) {
+            myFutureHS.soda = SODA.init("CWamrEJN7KPGKA51TxJ4k9StU");
+            myFutureHS.programs = myFutureHS.soda.extend("data.cityofnewyork.us", "mreg-rk5p");
         }
     }
 };
 
-$(document).ready(stuff.genesis);
+$(document).ready(myFutureHS.genesis);

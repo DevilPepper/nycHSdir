@@ -11,6 +11,7 @@
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script src="//www.parsecdn.com/js/parse-1.2.19.min.js"></script>
 
+    <script type="text/javascript" src="js/obj_SODA.js"></script>
     <script type="text/javascript" src="js/script_prototype.js"></script>
     <script type="text/javascript" src="js/script_funct.js"></script>
     <script type="text/javascript" src="js/script_ready.js"></script>
@@ -28,7 +29,10 @@
             <ol id="filters">
                 <li id="location">Location</li>
                 <li id="nycITT">Programs</li>
-                <li id="nycDOE">Acadamics</li>
+                <li id="academic">Academics</li>
+                <li id="nycDOE">College Readiness</li>
+                <li id="environment">Environment</li>
+                <li id="demographics">Demographics</li>
             </ol>
         </div>
 
@@ -47,8 +51,8 @@
                 
                 <div class="xplode">x</div>
                 <div id="filter_sections">
-                <div class="nycITT">
-				    <div id="interest_area">
+                <div class="nycITT criteria_section">
+				    <div id="interest_area" class="sodaEQ">
 				        <p id="txtInterest">Select your interests <br/><em>Use Ctrl (or Cmd) to select multiple</em></p>
 			            
                         <label><input type="checkbox" value="Animal Science" />Animal Science</label>
@@ -74,7 +78,7 @@
                         <label><input type="checkbox" value="Zoned" />Zoned</label>
 				    </div>
 			
-				    <div id="selection_method">
+				    <div id="selection_method" class="sodaEQ">
 				        <p id="txtAdmission">Select Other Admission Requirements</p>
 			
                         <label><input type="checkbox" value="Audition" />Audition</label>
@@ -92,13 +96,13 @@
 
                 </div>
 
-                <div class="location">
+                <div class="location criteria_section">
                     <div id="myPlace">
                         <label id="txtAddy">Start location: <input type="text"/></label>
-                        <input id="btnAddy" type="button" value="Use this address" />
+                        <!-- <input id="btnAddy" type="button" value="Use this address" /> -->
                         <p id="txtRadius">Distance from house:<br /><div id="myRadius"></div></p>
                     </div>
-                    <div id="borough">
+                    <div id="borough" class="sodaEQ">
 				        <p id="txtBoro">Select Borough Preferences</p>
 			
                         <label><input type="checkbox" value="Bronx" />Bronx</label>
@@ -107,7 +111,7 @@
                         <label><input type="checkbox" value="Queens" />Queens</label>
                         <label><input type="checkbox" value="Staten Island" />Staten Island</label>
 				    </div>
-                    <div id="geographical_district_code">
+                    <div id="geographical_district_code" class="schoolDatEQ">
                         <p id="txtDistrict">Select District Preferences</p>
                             <label><input type="checkbox" value="1" />1</label>
                             <label><input type="checkbox" value="2" />2</label>
@@ -144,8 +148,40 @@
                     </div>
                 </div>
                 
-                <div class="nycDOE">
-                    <div id="college_and_career_readiness_grade">
+                    <div class="academic criteria_section">
+                        <div id="average_completion_rate_for_remaining_regents" class="progressGT">
+                            <p>Average Completion Rate for Remaining Regents</p>
+                            
+                        <label><input type="checkbox" value="90.0%" />>=90.0%</label>
+                        <label><input type="checkbox" value="80.0%" />>=80.0%</label>
+                        <label><input type="checkbox" value="70.0%" />>=70.0%</label>
+                        <label><input type="checkbox" value="60.0%" />>=60.0%</label>
+                        <label><input type="checkbox" value="50.0%" />>=50.0%</label>
+                        <label><input type="checkbox" value="40.0%" />>=40.0%</label>
+                        <label><input type="checkbox" value="30.0%" />>=30.0%</label>
+                        </div>
+
+                        <div id="student_performance_grade" class="progressEQ">
+                            <p>Student Performance Grade</p>
+                        <label><input type="checkbox" value="A" />A</label>
+                        <label><input type="checkbox" value="B" />B</label>
+                        <label><input type="checkbox" value="C" />C</label>
+                        <label><input type="checkbox" value="D" />D</label>
+                        <label><input type="checkbox" value="F" />F</label>
+                        </div>
+
+                        <div id="student_progress_grade" class="progressEQ">
+                            <p>Student Progress Grade</p>
+                        <label><input type="checkbox" value="A" />A</label>
+                        <label><input type="checkbox" value="B" />B</label>
+                        <label><input type="checkbox" value="C" />C</label>
+                        <label><input type="checkbox" value="D" />D</label>
+                        <label><input type="checkbox" value="F" />F</label>
+                        </div>
+                    </div>
+
+                <div class="nycDOE criteria_section">
+                    <div id="college_and_career_readiness_grade" class="progressEQ">
                         <p id="txtCollegeReady">How important is college readiness? (A-F) </p>
                         <label><input type="checkbox" value="A" />A</label>
                         <label><input type="checkbox" value="B" />B</label>
@@ -155,11 +191,71 @@
                         <label><input type="checkbox" value="undefined" />undefined</label>
                     </div>
                
-                    <div id="postsecondary_enrollment_rate_18months">
-                        <p id="txtPost2nd18">What is a minimum acceptable percentage of post-secondary enrollment? <br />
-                        <input type="text" class="postsecondaryenrollmentrate18monthsinput"/></p>
+                    <div id="postsecondary_enrollment_rate_18months" class="progressGT">
+                        <p id="txtPost2nd18">What is a minimum acceptable percentage of post-secondary enrollment?</p>
+                        <label><input type="checkbox" value="100.0%" />100.0%</label>
+                        <label><input type="checkbox" value="90.0%" />>=90.0%</label>
+                        <label><input type="checkbox" value="80.0%" />>=80.0%</label>
+                        <label><input type="checkbox" value="70.0%" />>=70.0%</label>
+                        <label><input type="checkbox" value="60.0%" />>=60.0%</label>
                     </div>
                 </div>
+
+                    <div class="environment criteria_section">
+                        <div id="attendance_rate" class="progressGT">
+                            <p>Attendance Rate</p>
+                        <label><input type="checkbox" value="99.99%" />100.0%</label>
+                        <label><input type="checkbox" value="90.0%" />>=90.0%</label>
+                        <label><input type="checkbox" value="80.0%" />>=80.0%</label>
+                        <label><input type="checkbox" value="70.0%" />>=70.0%</label>
+                        <label><input type="checkbox" value="60.0%" />>=60.0%</label>
+
+                        </div>
+
+                    <div id="safety_and_respect" class="progressGT">
+                        <p>Safety and Respect Rating</p>
+                        <label><input type="checkbox" value="5" />>=5</label>
+                        <label><input type="checkbox" value="6" />>=6</label>
+                        <label><input type="checkbox" value="7" />>=7</label>
+                        <label><input type="checkbox" value="8" />>=8</label>
+                        <label><input type="checkbox" value="9" />>=9</label>
+                    </div>
+
+                    </div>
+                    <div class="demographics criteria_section">
+                        <div id="percent_ell" class="progressGT">
+                            <p>Percent ELL students</p>
+                        <label><input type="checkbox" value="90.0%" />>=90.0%</label>
+                        <label><input type="checkbox" value="80.0%" />>=80.0%</label>
+                        <label><input type="checkbox" value="70.0%" />>=70.0%</label>
+                        <label><input type="checkbox" value="60.0%" />>=60.0%</label>
+                        <label><input type="checkbox" value="50.0%" />>=50.0%</label>
+                        <label><input type="checkbox" value="40.0%" />>=40.0%</label>
+                        <label><input type="checkbox" value="30.0%" />>=30.0%</label>
+                        <label><input type="checkbox" value="20.0%" />>=20.0%</label>
+                        <label><input type="checkbox" value="10.0%" />>=10.0%</label>
+                        </div>
+
+                        <div id="perent_students_with_disabilities" class="progressGT">
+                            <p>Percentage of students with disabilities</p>
+                        <label><input type="checkbox" value="30.0%" />>=30.0%</label>
+                        <label><input type="checkbox" value="20.0%" />>=20.0%</label>
+                        <label><input type="checkbox" value="10.0%" />>=10.0%</label>
+                        </div>
+
+                        <div id="percent_black_or_hispanic" class="progressGT">
+                            <p>Percentage of students that are black or hispanic</p>
+                        <label><input type="checkbox" value="90.0%" />>=90.0%</label>
+                        <label><input type="checkbox" value="80.0%" />>=80.0%</label>
+                        <label><input type="checkbox" value="70.0%" />>=70.0%</label>
+                        <label><input type="checkbox" value="60.0%" />>=60.0%</label>
+                        <label><input type="checkbox" value="50.0%" />>=50.0%</label>
+                        <label><input type="checkbox" value="40.0%" />>=40.0%</label>
+                        <label><input type="checkbox" value="30.0%" />>=30.0%</label>
+                        <label><input type="checkbox" value="20.0%" />>=20.0%</label>
+                        <label><input type="checkbox" value="10.0%" />>=10.0%</label>
+                        </div>
+                    </div>
                 
                 </div>
 			</div>

@@ -39,7 +39,7 @@ body
 
 #sidebar 
 {
-    width:10em;
+    width:12em;
 }
 
 
@@ -48,6 +48,11 @@ body
     width:52em;
     height:20em;
 }
+
+    .criteria_section div 
+    {
+        clear:both;
+    }
 /*
 #filter_sections, #filter_sections div
 {
@@ -104,7 +109,7 @@ body
 .nycITT div, div.nycDOE
 {
     float:left;
-    width:25em;
+    
     text-align:center;
     padding:1em 0;
     overflow:visible;
@@ -112,11 +117,13 @@ body
 
 .nycITT p, nycDOE p
 {
+    /*
 margin:.75em 0 .1em 0;
  font-weight:bold;
  font-size:1.25em;
 font-family:sans-serif;
  padding-bottom:5%;
+        */
 }
 /*
 div.nycITT {
