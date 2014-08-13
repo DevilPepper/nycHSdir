@@ -89,3 +89,40 @@ function langChange(xml) {
         displayXML(XEmL);
     });
 }
+
+function makeMarker(map, latLng, title, pin, id, info)
+{
+    var marker = new google.maps.Marker({
+        map: map,
+        position: latLng,
+        //title: location.name
+        title: title
+    });
+    marker.set("unico", id);
+    google.maps.event.addListener(marker, 'click', function () {
+        popPin(this, info);
+    });
+    pin.push(marker); //store marker so it can be deleted later
+    return marker;
+}
+
+function popPin(marker, info)
+{
+    var unique = marker.get("unico");
+    info.setContent($('.mapPins .' + unique).parent().clone().get(0));
+    info.open(marker.get("map"), marker);
+}
+
+/*
+function parseAND(andables) {
+    if ($.isArray(andables[0])) {
+        while (andables[1]) {
+            $.each(andables.pop(), function (a, arr) {
+                andables.push($.grep(andables.pop(), function (and1) { return and1.dbn == arr.dbn; }));
+            });
+        }
+        andables = andables[0];
+    }
+    return andables;
+}
+*/

@@ -5,164 +5,105 @@ $(document).on('change', 'label :checkbox', function () {
     refreshResults();
 });
 
-function refreshResults()
+function refreshResults() //these each functions need to be neater
 {
-    //var nycITTsql = '';
-    myFutureHS.currPage = 1;
-    myFutureHS.currPage2 = 1;
-
-    //while there are still pins on the map, remove them from the map and the array
-    while (myFutureHS.overlays[0]) {
-        myFutureHS.overlays.pop().setMap(null);
-    }
-
-    //clear old results, if any
-    myFutureHS.parseSODA = [];
-
+    myFutureHS.clearAll();
     ///////////////////////////////////SOCRATA////////////////////////////////////////////////
     //set up socrata query
-    myFutureHS.programs.clearAll();
     myFutureHS.programs.select(['program_code', 'program_name', 'dbn', 'printed_school_name', 'interest_area', 'selection_method', 'borough', 'urls']);
     //$('.nycITT div, .location div').each(function () {
     $('div.sodaEQ').each(function () {
-        var elemID = $(this).attr('id');
-        $(this).find('input:checked').each(function () {
-            myFutureHS.programs.equalTo(elemID, $(this).attr('value'));
-        });
-        //it needs to be this way
-        //var query = getQuery($(this));
-        //nycITTsql += query;
-        //query = null;
-
+        queryEqual($(this), myFutureHS.programs);
     });
 
     $('div.sodaGT').each(function () {
-        var elemID = $(this).attr('id');
-        $(this).find('input:checked').each(function () {
-            myFutureHS.programs.greaterThan(elemID, $(this).attr('value'));
-        });
-        //it needs to be this way
-        //var query = getQuery($(this));
-        //nycITTsql += query;
-        //query = null;
-
+        queryGreaterThan($(this), myFutureHS.programs);
     });
-    //this is the query url
-    //var nycITTurl = myFutureHS.nycITTdb;
-    //if user selected options
-    //if (nycITTsql.length > 0) {
-        //first, remove the extra AND
-        //nycITTsql = nycITTsql.slice(0, -5);
-        //then prepend with the $where clause and add to the url
-        //nycITTurl += "$where=" + nycITTsql;
-    //}
-    //we're only interested in some columns
-    //nycITTurl += myFutureHS.nycITTsel;
-    //and last but not least, the application key
-    //nycITTurl += myFutureHS.nycITTkey;
-
-    //console.log(nycITTurl);
     //////////////////////////////////////////////////////////////////////////////////////////
 
 
     /////////////////////////////////////PARSE////////////////////////////////////////////////
-    //set up the query for parse.com
-    var parseQuery = new Parse.Query(myFutureHS.doedb);
-
-    //more filters for parse.com
+    
     $('div.progressEQ').each(function () {
-        var filt = $(this).attr('id');
-        var er = "";
-        $(this).find('input:text').each(function () {
-            er = $(this).val();
-            if (!isNaN(+er)) er = +er;
-            parseQuery.equalTo(filt, $(this).val());
-        });
-        $(this).find('input:checked').each(function () {
-            er = $(this).val();
-            if (!isNaN(+er)) er = +er;
-            parseQuery.equalTo(filt, $(this).val());
-        });
-        //if user entered a filter, use it.
-        //if (er.length > 0) parseQuery.equalTo(filt, er);
+        queryEqual($(this), myFutureHS.doedb);
     });
 
     $('div.progressGT').each(function () {
-        var filt = $(this).attr('id');
-        var er = "";
-        $(this).find('input:text').each(function () {
-            er = $(this).val();
-            if (!isNaN(+er)) er = +er;
-            parseQuery.greaterThan(filt, er);
-        });
-        $(this).find('input:checked').each(function () {
-            er = $(this).val();
-            if (!isNaN(+er)) er = +er;
-            parseQuery.greaterThan(filt, er);
-        });
-        //if user entered a filter, use it.
-        //if (er.length > 0) parseQuery.equalTo(filt, er);
+        queryGreaterThan($(this), myFutureHS.doedb);
     });
 
+    $('div.progressBET').each(function () {
+        queryBetween($(this), myFutureHS.doedb);
+    });
     //parseQuery.select(['dbn', 'collegeandcareerreadinessgrade', 'postsecondaryenrollmentrate18months']);
     //parseQuery.greaterThan('postsecondary_enrollment_rate_18months', '85%');
-    parseQuery.limit(458); //default is 100...
+    myFutureHS.doedb.limit(458); //default is 100...
     //////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-    var parseQuery2 = new Parse.Query(myFutureHS.schoolData);
-    parseQuery2.containedIn("location_category", ['High school', 'Ungraded', 'K-12 all grades']);
+
+    ////////////////////////////////////SCHOOL DATA//////////////////////////////////////////
+    myFutureHS.schoolData.containedIn("location_category", ['High school', 'Ungraded', 'K-12 all grades']);
 
     //more filters for parse.com
     $('div.schoolDatEQ').each(function () {
-        var filt = $(this).attr('id');
-        var er = "";
-        $(this).find('input:text').each(function () {
-            er = $(this).val();
-            if (!isNaN(+er)) er = +er;
-            parseQuery2.equalTo(filt, er);
-        });
-        $(this).find('input:checked').each(function () {
-            er = $(this).val();
-            if (!isNaN(+er)) er = +er;
-            parseQuery2.equalTo(filt, er);
-        });
-        //if user entered a filter, use it.
-        //if (er.length > 0) parseQuery.equalTo(filt, er);
+        queryEqual($(this), myFutureHS.schoolData);
     });
 
     $('div.schoolDatGT').each(function () {
-        var filt = $(this).attr('id');
-        var er = "";
-        $(this).find('input:text').each(function () {
-            er = $(this).val();
-            if (!isNaN(+er)) er = +er;
-            parseQuery2.greaterThan(filt, er);
-        });
-        $(this).find('input:checked').each(function () {
-            er = $(this).val();
-            if (!isNaN(+er)) er = +er;
-            parseQuery2.greaterThan(filt, er);
-        });
-        //if user entered a filter, use it.
-        //if (er.length > 0) parseQuery.equalTo(filt, er);
+        queryGreaterThan($(this), myFutureHS.schoolData);
     });
 
-    parseQuery2.limit(503);
-    //$.getJSON(nycITTurl)
-    var querying = $.when(myFutureHS.programs.find(), parseQuery.find().toJqueryPromise(), parseQuery2.find().toJqueryPromise());
+    $('div.schoolDatBET').each(function () {
+        queryBetween($(this), myFutureHS.schoolData);
+    });
+
+    myFutureHS.schoolData.limit(503);
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+    //////////////////////////////////////DEMOGRAPHICS//////////////////////////////////////////
+    myFutureHS.demographics.greaterThan("grade_9", 0, true);
+    myFutureHS.demographics.greaterThan("grade_10", 0, true);
+    myFutureHS.demographics.greaterThan("grade_11", 0, true);
+    myFutureHS.demographics.greaterThan("grade_12", 0, true);
+    myFutureHS.demographics.equalTo("school_year", "2011-2012");
+    myFutureHS.demographics.limit(470);
+    $('div.demoEQ').each(function () {
+        queryEqual($(this), myFutureHS.demographics);
+    });
+
+    $('div.demoGT').each(function () {
+        queryGreaterThan($(this), myFutureHS.demographics);
+    });
+
+    $('div.demoBET').each(function () {
+        queryBetween($(this), myFutureHS.demographics);
+    });
+    ////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    var querying = $.when(myFutureHS.programs.find(), myFutureHS.doedb.find(), myFutureHS.schoolData.find(), myFutureHS.demographics.find());
     
 
     //////////////////////////////////RESULTS ARE IN/////////////////////////////////////////
-    querying.done(function (searchResults, parsedb, schoolDat) {
-        searchResults = searchResults[0];
+    querying.done(function (searchResults, parsedb, schoolDat, demo) {
+        //searchResults = searchResults[0];
+        //parsedb = parseAND(parsedb);
+        //schoolDat = parseAND(schoolDat);
+        //demo = parseAND(demo);
         console.log('program data');
         console.log(searchResults);
         console.log('progress report');
         console.log(parsedb);
         console.log('more school data');
         console.log(schoolDat);
+        console.log('demographics');
+        console.log(demo);
         
 
         //monster fusion
@@ -171,9 +112,10 @@ function refreshResults()
             var program = []; //a temp array to hold the program objects
 
             //get all socrata objects that match this parse object's dbn
-            var multiple = $.grep(searchResults, function (dietSODA) { return dietSODA.dbn == parseEX.attributes.dbn; });
-            var parseSchool = $.grep(schoolDat, function (dietSODA) { return dietSODA.attributes.dbn == parseEX.attributes.dbn; });
-            
+            var multiple = $.grep(searchResults, function (dietSODA) { return dietSODA.dbn == parseEX.dbn; });
+            var parseSchool = $.grep(schoolDat, function (dietSODA) { return dietSODA.dbn == parseEX.dbn; });
+            var population = $.grep(demo, function (dietSODA) { return dietSODA.dbn == parseEX.dbn; });
+
             var liteSODA = null; //for some reason I need this
             if (multiple.length > 0) {
                 
@@ -190,21 +132,24 @@ function refreshResults()
                     });
                 });
             }
-            if((liteSODA != null) && parseSchool.length > 0)
+            if((liteSODA != null) && parseSchool.length > 0 && population.length > 0)
             {
                 //finally, make this object that holds all the data that is necessary
                 myFutureHS.parseSODA.push({
                     //from current parse object
-                    dbn: parseEX.attributes.dbn,
-                    principal: parseEX.attributes.principal,
-                    postsecondary_enrollment: parseEX.attributes.postsecondary_enrollment_rate_18months,
-                    college_readiness: parseEX.attributes.college_and_career_readiness_grade,
-                    overall: parseEX.attributes.overall_grade,
-                    attendance: parseEX.attributes.attendance_rate,
+                    dbn: parseEX.dbn,
+                    principal: parseEX.principal,
+                    postsecondary_enrollment: parseEX.postsecondary_enrollment_rate_18months,
+                    college_readiness: parseEX.college_and_career_readiness_grade,
+                    overall: parseEX.overall_grade,
+                    attendance: parseEX.attendance_rate,
 
                     //from school data
-                    latitude: parseSchool[0].attributes.latitude,
-                    longitude: parseSchool[0].attributes.longitude,
+                    latitude: parseSchool[0].latitude,
+                    longitude: parseSchool[0].longitude,
+
+                    //from demographics data
+                    total_enrollment: population[0].total_enrollment,
 
                     //from the last socrata object that match this parse object's dbn
                     //(these are all the same if they have the same dbn)
@@ -216,7 +161,7 @@ function refreshResults()
                     programs: program
                 });
             }
-            //else console.log(parseEX.attributes);
+            //else console.log(parseEX);
             liteSODA = null;
             
             //nullify these temp arrays and object to clear memory
@@ -232,24 +177,83 @@ function refreshResults()
 
         //show results
         renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', myFutureHS.parseSODA, myFutureHS.currPage, myFutureHS.perPage);
-        
+        renderTemplates($('.mapPins'), 'map_pin_tmpl.html', myFutureHS.parseSODA, 1, myFutureHS.parseSODA.length);
+        $('.mapPins').hide();
+        //$('.mapPins div').each(function () { $(this).addClass('mapPin'); });
         //drop pins for each result
         //if only I could unnest this
+        var centerLat = 0, centerLng = 0;
+
         $.each(myFutureHS.parseSODA, function (i, entry) {
            
                     //map.setCenter(results[0].geometry.location);
 
-                    var marker = new google.maps.Marker({
-                        map: myFutureHS.map,
-                        position: new google.maps.LatLng(entry.latitude, entry.longitude),
-                        //title: location.name
-                        title: entry.printed_school_name
-                    });
-                    myFutureHS.overlays.push(marker); //store marker so it can be deleted later
+            makeMarker(myFutureHS.map, new google.maps.LatLng(entry.latitude, entry.longitude), entry.printed_school_name, myFutureHS.overlays, entry.dbn, myFutureHS.infoWindow);
+                    
+                    centerLat += entry.latitude;
+                    centerLng += entry.longitude;
         });
+        if (myFutureHS.parseSODA.length > 0) {
+            centerLat /= myFutureHS.parseSODA.length;
+            centerLng /= myFutureHS.parseSODA.length;
+            myFutureHS.map.setCenter(new google.maps.LatLng(centerLat, centerLng));
+        }
 
     });
     //////////////////////////////////////////////////////////////////////////////////////////
 
     nycITTurl = null;
+}
+
+function queryEqual($this, q) {
+    var elemID = $this.attr('id');
+    var er = "";
+    $this.find('input:text').each(function () {
+        er = $(this).val();
+        if (!isNaN(+er)) er = +er;
+        q.equalTo(elemID, er, elemID);
+    });
+    $this.find('input:checked').each(function () {
+        er = $(this).val();
+        if (!isNaN(+er)) er = +er;
+        q.equalTo(elemID, er, elemID);
+    });
+    //if user entered a filter, use it.
+    //if (er.length > 0) parseQuery.equalTo(filt, er);
+}
+
+function queryGreaterThan($this, q) {
+    var elemID = $this.attr('id');
+    var er = "";
+    $this.find('input:text').each(function () {
+        er = $(this).val();
+        if (!isNaN(+er)) er = +er;
+        q.greaterThan(elemID, er, elemID);
+    });
+    $this.find('input:checked').each(function () {
+        er = $(this).val();
+        if (!isNaN(+er)) er = +er;
+        q.greaterThan(elemID, er, elemID);
+    });
+    //if user entered a filter, use it.
+    //if (er.length > 0) parseQuery.equalTo(filt, er);
+}
+
+function queryBetween($this, q) {
+    var elemID = $this.attr('id');
+    var er = "";
+    $this.find('input:text').each(function () {
+        er = $.parseJSON($(this).val());
+        if (!isNaN(+er.greaterThan) && er.greaterThan != null) er.greaterThan = +er.greaterThan;
+        if (!isNaN(+er.lessThan) && er.lessThan != null) er.lessThan = +er.lessThan;
+        q.between(elemID, er.greaterThan, er.lessThan, elemID);
+    });
+    $this.find('input:checked').each(function () {
+        er = $.parseJSON($(this).val());
+        if (!isNaN(+er.greaterThan) && er.greaterThan != null) er.greaterThan = +er.greaterThan;
+        if (!isNaN(+er.lessThan) && er.lessThan != null) er.lessThan = +er.lessThan;
+        q.between(elemID, er.greaterThan, er.lessThan, elemID);
+    });
+    //if user entered a filter, use it.
+    //if (er.length > 0) parseQuery.equalTo(filt, er);
 }

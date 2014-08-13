@@ -77,7 +77,16 @@
         SODAlink += this.appKey;
 
         console.log(SODAlink);
-        return $.getJSON(SODAlink);
+        var sodaPromise = $.getJSON(SODAlink);
+        var liteSODAPromise = $.Deferred();
+        sodaPromise.then(
+            function (searchResults, status) {
+                //if ($.isArray(searchResults[0])) { searchResults = searchResults[0]; }
+                liteSODAPromise.resolve(searchResults);
+            },
+            liteSODAPromise.reject.bind(liteSODAPromise)
+            );
+        return liteSODAPromise.promise();
     }
 }
 
@@ -86,21 +95,21 @@ SODA.prototype.clearAll = function ()
     this.query = {};
 }
 
-SODA.prototype.equalTo = function (key, value)
+SODA.prototype.equalTo = function (key, value, orProp)
 {
     if (!this.query.hasOwnProperty('eq')) this.query['eq'] = {};
     if (!this.query.eq.hasOwnProperty(key)) this.query.eq[key] = [];
     this.query.eq[key].push(value);
 }
 
-SODA.prototype.greaterThan = function (key, value)
+SODA.prototype.greaterThan = function (key, value, orProp)
 {
     if (!this.query.hasOwnProperty('gt')) this.query['gt'] = {};
     if (!this.query.gt.hasOwnProperty(key)) this.query.gt[key] = [];
     this.query.gt[key].push(value);
 }
 
-SODA.prototype.lessThan = function (key, value)
+SODA.prototype.lessThan = function (key, value, orProp)
 {
     if (!this.query.hasOwnProperty('lt')) this.query['lt'] = {};
     if (!this.query.lt.hasOwnProperty(key)) this.query.lt[key] = [];

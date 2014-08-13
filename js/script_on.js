@@ -23,8 +23,13 @@ $(document).on('click', '#filters li', function () {
 
 //when you click on the name text in the results, this happens
 $(document).on('click', '.result_name', function () {
-    console.log($(this).parent().attr('id')); //logs the parent div's id in the console
-    $("#map").fadeTo('slow',0.1); //fades the map for no really good reason
+    var $this = $(this);
+    var marker = $.grep(myFutureHS.overlays, function (pin) {
+        return pin.get('unico') == $this.parent().attr('class');
+    });
+    console.log(marker);
+    popPin(marker[0], myFutureHS.infoWindow);
+    //$("#map").fadeTo('slow',0.1); //fades the map for no really good reason
 });
 
 //collapsable button click event

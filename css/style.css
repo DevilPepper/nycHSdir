@@ -115,6 +115,18 @@ body
     overflow:visible;
 }
 
+    .mapPins {
+        visibility:hidden;
+    }
+
+        .mapPins * {
+            visibility:visible;
+        }
+    .mapPin {
+        background-color:black;
+        color:white;
+    }
+
 .nycITT p, nycDOE p
 {
     /*
@@ -144,7 +156,7 @@ div.nycDOE
     border-left: thin solid #cc6600;
 }
 
-.result_wrapper {
+.result_wrapper, .result_wrapper>div {
 	border: 1px solid gray;
 	padding: .5em;
 	margin-top: 1em;

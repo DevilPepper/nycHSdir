@@ -8,11 +8,14 @@
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.js"></script>
     <script type="text/javascript" src="js/jquery-loadTemplate.js"></script>
+
 	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
     <script src="//www.parsecdn.com/js/parse-1.2.19.min.js"></script>
-
-    <script type="text/javascript" src="js/obj_SODA.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    
     <script type="text/javascript" src="js/script_prototype.js"></script>
+    <script type="text/javascript" src="js/obj_SODA.js"></script>
+    <script type="text/javascript" src="js/obj_Parse.js"></script>
     <script type="text/javascript" src="js/script_funct.js"></script>
     <script type="text/javascript" src="js/script_ready.js"></script>
     <script type="text/javascript" src="js/script_on.js"></script>
@@ -149,16 +152,16 @@
                 </div>
                 
                     <div class="academic criteria_section">
-                        <div id="average_completion_rate_for_remaining_regents" class="progressGT">
+                        <div id="average_completion_rate_for_remaining_regents" class="progressBET">
                             <p>Average Completion Rate for Remaining Regents</p>
                             
-                        <label><input type="checkbox" value="90.0%" />>=90.0%</label>
-                        <label><input type="checkbox" value="80.0%" />>=80.0%</label>
-                        <label><input type="checkbox" value="70.0%" />>=70.0%</label>
-                        <label><input type="checkbox" value="60.0%" />>=60.0%</label>
-                        <label><input type="checkbox" value="50.0%" />>=50.0%</label>
-                        <label><input type="checkbox" value="40.0%" />>=40.0%</label>
-                        <label><input type="checkbox" value="30.0%" />>=30.0%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"90%","lessThan":"100%"}' />90-100%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"80%","lessThan":"90%"}'/>80-90%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"70%","lessThan":"80%"}' />70-80%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"60%","lessThan":"70%"}' />60-70%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"50%","lessThan":"60%"}' />50-60%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"40%","lessThan":"50%"}' />40-50%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"30%","lessThan":"40%"}' />30-40%</label>
                         </div>
 
                         <div id="student_performance_grade" class="progressEQ">
@@ -191,70 +194,76 @@
                         <label><input type="checkbox" value="undefined" />undefined</label>
                     </div>
                
-                    <div id="postsecondary_enrollment_rate_18months" class="progressGT">
+                    <div id="postsecondary_enrollment_rate_18months" class="progressBET">
                         <p id="txtPost2nd18">What is a minimum acceptable percentage of post-secondary enrollment?</p>
-                        <label><input type="checkbox" value="100.0%" />100.0%</label>
-                        <label><input type="checkbox" value="90.0%" />>=90.0%</label>
-                        <label><input type="checkbox" value="80.0%" />>=80.0%</label>
-                        <label><input type="checkbox" value="70.0%" />>=70.0%</label>
-                        <label><input type="checkbox" value="60.0%" />>=60.0%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"90%","lessThan":"100%"}' />90-100%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"80%","lessThan":"90%"}'/>80-90%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"70%","lessThan":"80%"}' />70-80%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"60%","lessThan":"70%"}' />60-70%</label>
                     </div>
                 </div>
 
                     <div class="environment criteria_section">
-                        <div id="attendance_rate" class="progressGT">
+                        <div id="attendance_rate" class="progressBET">
                             <p>Attendance Rate</p>
-                        <label><input type="checkbox" value="99.99%" />100.0%</label>
-                        <label><input type="checkbox" value="90.0%" />>=90.0%</label>
-                        <label><input type="checkbox" value="80.0%" />>=80.0%</label>
-                        <label><input type="checkbox" value="70.0%" />>=70.0%</label>
-                        <label><input type="checkbox" value="60.0%" />>=60.0%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"90%","lessThan":"100%"}' />90-100%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"80%","lessThan":"90%"}'/>80-90%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"70%","lessThan":"80%"}' />70-80%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"60%","lessThan":"70%"}' />60-70%</label>
 
                         </div>
 
-                    <div id="safety_and_respect" class="progressGT">
+                    <div id="safety_and_respect" class="progressBET">
                         <p>Safety and Respect Rating</p>
-                        <label><input type="checkbox" value="5" />>=5</label>
-                        <label><input type="checkbox" value="6" />>=6</label>
-                        <label><input type="checkbox" value="7" />>=7</label>
-                        <label><input type="checkbox" value="8" />>=8</label>
-                        <label><input type="checkbox" value="9" />>=9</label>
+                        <label><input type="checkbox" value='{"greaterThan":5,"lessThan":6}' />5-6</label>
+                        <label><input type="checkbox" value='{"greaterThan":6,"lessThan":7}' />6-7</label>
+                        <label><input type="checkbox" value='{"greaterThan":7,"lessThan":8}' />7-8</label>
+                        <label><input type="checkbox" value='{"greaterThan":8,"lessThan":9}' />8-9</label>
+                        <label><input type="checkbox" value='{"greaterThan":9,"lessThan":null}' />9+</label>
                     </div>
 
                     </div>
                     <div class="demographics criteria_section">
-                        <div id="percent_ell" class="progressGT">
+                        <div id="percent_ell" class="progressBET">
                             <p>Percent ELL students</p>
-                        <label><input type="checkbox" value="90.0%" />>=90.0%</label>
-                        <label><input type="checkbox" value="80.0%" />>=80.0%</label>
-                        <label><input type="checkbox" value="70.0%" />>=70.0%</label>
-                        <label><input type="checkbox" value="60.0%" />>=60.0%</label>
-                        <label><input type="checkbox" value="50.0%" />>=50.0%</label>
-                        <label><input type="checkbox" value="40.0%" />>=40.0%</label>
-                        <label><input type="checkbox" value="30.0%" />>=30.0%</label>
-                        <label><input type="checkbox" value="20.0%" />>=20.0%</label>
-                        <label><input type="checkbox" value="10.0%" />>=10.0%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"90%","lessThan":"100%"}' />90-100%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"80%","lessThan":"90%"}'/>80-90%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"70%","lessThan":"80%"}' />70-80%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"60%","lessThan":"70%"}' />60-70%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"50%","lessThan":"60%"}' />50-60%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"40%","lessThan":"50%"}' />40-50%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"30%","lessThan":"40%"}' />30-40%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"20%","lessThan":"30%"}' />20-30%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"10%","lessThan":"20%"}' />10-20%</label>
                         </div>
 
-                        <div id="perent_students_with_disabilities" class="progressGT">
+                        <div id="perent_students_with_disabilities" class="progressBET">
                             <p>Percentage of students with disabilities</p>
-                        <label><input type="checkbox" value="30.0%" />>=30.0%</label>
-                        <label><input type="checkbox" value="20.0%" />>=20.0%</label>
-                        <label><input type="checkbox" value="10.0%" />>=10.0%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"30%","lessThan":"40%"}' />30-40%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"20%","lessThan":"30%"}' />20-30%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"10%","lessThan":"20%"}' />10-20%</label>
                         </div>
 
-                        <div id="percent_black_or_hispanic" class="progressGT">
+                        <div id="percent_black_or_hispanic" class="progressBET">
                             <p>Percentage of students that are black or hispanic</p>
-                        <label><input type="checkbox" value="90.0%" />>=90.0%</label>
-                        <label><input type="checkbox" value="80.0%" />>=80.0%</label>
-                        <label><input type="checkbox" value="70.0%" />>=70.0%</label>
-                        <label><input type="checkbox" value="60.0%" />>=60.0%</label>
-                        <label><input type="checkbox" value="50.0%" />>=50.0%</label>
-                        <label><input type="checkbox" value="40.0%" />>=40.0%</label>
-                        <label><input type="checkbox" value="30.0%" />>=30.0%</label>
-                        <label><input type="checkbox" value="20.0%" />>=20.0%</label>
-                        <label><input type="checkbox" value="10.0%" />>=10.0%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"90%","lessThan":"100%"}' />90-100%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"80%","lessThan":"90%"}'/>80-90%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"70%","lessThan":"80%"}' />70-80%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"60%","lessThan":"70%"}' />60-70%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"50%","lessThan":"60%"}' />50-60%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"40%","lessThan":"50%"}' />40-50%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"30%","lessThan":"40%"}' />30-40%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"20%","lessThan":"30%"}' />20-30%</label>
+                        <label><input type="checkbox" value='{"greaterThan":"10%","lessThan":"20%"}' />10-20%</label>
                         </div>
+
+                        <div id="total_enrollment" class="demoBET">
+                            <p>School size</p>
+                        <label><input type="checkbox" value='{"greaterThan":null,"lessThan":450}' />small</label>
+                        <label><input type="checkbox" value='{"greaterThan":450,"lessThan":1337}'/>Medium</label>
+                        <label><input type="checkbox" value='{"greaterThan":1337,"lessThan":null}' />Large</label>
+                        </div>
+
                     </div>
                 
                 </div>
@@ -265,6 +274,9 @@
             
 
 			<div id="map" class="map"></div>
+            <div class="mapPins">
+
+            </div>
 			<div class="more_info">
                 <div class="xplode">x</div>
                 <div class="print_wrapper"></div>

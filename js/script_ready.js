@@ -4,6 +4,8 @@ var myFutureHS = {
     
     schoolData: null,
 
+    demographics: null,
+
     soda: null,
 
     programs:null,
@@ -35,6 +37,8 @@ var myFutureHS = {
     //new geocoder
     geocoder: null,
 
+    infoWindow: null,
+    
     myPlace: null,
 
     circle: null,
@@ -63,7 +67,7 @@ var myFutureHS = {
             center: myFutureHS.center //??
         };
         myFutureHS.map = new google.maps.Map($('#map').get(0), myFutureHS.mapOptions); //puts a new map in #map, applies some options, and also stores it in a variable
-
+        
         //Add KML boundaries
         /*
         var doeBoundaries = new google.maps.KmlLayer({
@@ -77,9 +81,11 @@ var myFutureHS = {
         //new geocoder
         myFutureHS.geocoder = new google.maps.Geocoder();
 
+        myFutureHS.infoWindow = new google.maps.InfoWindow({maxWidth: '20em'});
 
-
-
+        google.maps.event.addListener(myFutureHS.map, 'click', function () {
+            myFutureHS.infoWindow.close();
+        });
         //now hide the stuff that shouldn't be on the screen yet
         $('.search_results').hide();
         $('.more_info').hide();
@@ -167,8 +173,9 @@ var myFutureHS = {
         if (myFutureHS.doedb == null || myFutureHS.schoolData == null) {
             //initialize Parse db
             Parse.initialize("MtPQsRRglfpClARD9Gskmv7rdkvUaMCHHJ2G90Ri", "QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC");
-            myFutureHS.doedb = Parse.Object.extend("HSProgress");
-            myFutureHS.schoolData = Parse.Object.extend("schoolData");
+            myFutureHS.doedb = new parseWrapper("HSProgress");
+            myFutureHS.schoolData = new parseWrapper("schoolData");
+            myFutureHS.demographics = new parseWrapper("demographics");
         }
     },
 
@@ -177,6 +184,24 @@ var myFutureHS = {
             myFutureHS.soda = SODA.init("CWamrEJN7KPGKA51TxJ4k9StU");
             myFutureHS.programs = myFutureHS.soda.extend("data.cityofnewyork.us", "mreg-rk5p");
         }
+    },
+
+    clearAll: function () {
+        //var nycITTsql = '';
+        myFutureHS.currPage = 1;
+        myFutureHS.currPage2 = 1;
+
+        //while there are still pins on the map, remove them from the map and the array
+        while (myFutureHS.overlays[0]) {
+            myFutureHS.overlays.pop().setMap(null);
+        }
+
+        //clear old results, if any
+        myFutureHS.parseSODA = [];
+        myFutureHS.programs.clearAll();
+        myFutureHS.doedb.clearAll();
+        myFutureHS.schoolData.clearAll();
+        myFutureHS.demographics.clearAll();
     }
 };
 
