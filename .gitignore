@@ -213,3 +213,13 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+#################
+## unneeded files
+#################
+test*.*
+Copy of *.*
+*.gdoc
+parse.js
+script.js
+jquery.xdomainajax.js
