@@ -21,17 +21,6 @@ $(document).on('click', '#filters li', function () {
     showMenu($(this));
 });
 
-//when you click on the name text in the results, this happens
-$(document).on('click', '.result_name', function () {
-    var $this = $(this);
-    var marker = $.grep(myFutureHS.overlays, function (pin) {
-        return pin.get('unico') == $this.parent().attr('class');
-    });
-    console.log(marker);
-    popPin(marker[0], myFutureHS.infoWindow);
-    //$("#map").fadeTo('slow',0.1); //fades the map for no really good reason
-});
-
 //collapsable button click event
 $(document).on('click', '.collapsable button', function () {
     collapse_search(); //calls collapse_search(). this function might get used somewhere else too.
@@ -42,22 +31,24 @@ $(document).on('click', '.xplode', function () {
     $(this).parent().hide("explode", { pieces: 36 });
 });
 
+//when you click on the name text in the results, this happens
+$(document).on('click', '.result_name', function () {
+    var $this = $(this);
+    var marker = $.grep(myFutureHS.map.overlays, function (pin) {
+        return pin.get('unico') == $this.parent().attr('class');
+    });
+    console.log(marker);
+    myFutureHS.map.popPin(marker[0], '.mapPins');
+    //$("#map").fadeTo('slow',0.1); //fades the map for no really good reason
+});
+
 $(document).on('change', '#myPlace :text', function () {
-    myFutureHS.geocoder.geocode({
+    myFutureHS.map.geocoder.geocode({
         'address': $('#myPlace :text').val()
     }, function (results, status) {
         if (status == google.maps.GeocoderStatus.OK) {
             //map.setCenter(results[0].geometry.location);
-            if (myFutureHS.myPlace != null) myFutureHS.myPlace.setMap(null);
-            myFutureHS.myPlace = null;
-            myFutureHS.myPlace = new google.maps.Marker({
-                map: myFutureHS.map,
-                position: results[0].geometry.location,
-                //title: location.name
-                title: 'My Place',
-                icon: 'img/sandCastle.gif'
-            });
-            myFutureHS.circle.bindTo('center', myFutureHS.myPlace, 'position');
+            myFutureHS.map.updateMyPlace(results[0].geometry.location);
         }
     });
 });

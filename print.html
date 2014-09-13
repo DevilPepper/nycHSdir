@@ -1,0 +1,24 @@
+﻿<html lang="en-us">
+    <head>
+        <title>myFutureHS Print Page</title>
+
+    	<link rel="stylesheet" type="text/css" href="css/print.css">
+
+	    <script type="text/javascript" src="js/jquery.js"></script>
+	    <script type="text/javascript" src="js/jquery-ui.js"></script>
+    
+        <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var data = window.opener.com;
+                console.log(data);
+                console.log(data.results);
+                console.log(data.queries);
+                window.print();
+            });
+        </script>
+
+    </head>
+    <body><div class="page"></div><div class="page"></div></body>
+</html>

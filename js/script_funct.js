@@ -34,6 +34,26 @@ function collapseIT($this){
 }
 */
 
+function pushClass($this, array)
+{
+    //make this a function
+    var thisClass = $this.parent().attr("class");
+    var a = thisClass.split(" ");
+    $.each(a, function (i, c) {
+        if ($.inArray(c, array) == -1) array.push(c);
+    });
+    //another function takes master, removes the class from all <li>s, and re adds them to the ids in master while removing them from the array
+}
+
+function highlighter(ol, liClass, array)
+{
+    $(ol + " li").each(function () {
+        $(this).removeClass(liClass);
+    });
+    while (array[0]) {
+        $('#' + array.pop()).addClass(liClass);
+    }
+}
 //the query function for socrata's db
 //this is one section(column in the db) at a time
 function getQuery($this)
@@ -63,10 +83,6 @@ function renderTemplates($dest, tmpl, data, pageNo, perPage) {
     $dest.loadTemplate(tmpl, data, { isFile: true, paged: true, pageNo: pageNo, elemPerPage: perPage });
 }
 
-function updateRadius(circle, rad) {
-    circle.setRadius(rad);
-}
-
 function displayXML($XMLement) {
     var XMLement = $($XMLement);
 
@@ -88,29 +104,6 @@ function langChange(xml) {
     $.get(xml, function (XEmL, e) {
         displayXML(XEmL);
     });
-}
-
-function makeMarker(map, latLng, title, pin, id, info)
-{
-    var marker = new google.maps.Marker({
-        map: map,
-        position: latLng,
-        //title: location.name
-        title: title
-    });
-    marker.set("unico", id);
-    google.maps.event.addListener(marker, 'click', function () {
-        popPin(this, info);
-    });
-    pin.push(marker); //store marker so it can be deleted later
-    return marker;
-}
-
-function popPin(marker, info)
-{
-    var unique = marker.get("unico");
-    info.setContent($('.mapPins .' + unique).parent().clone().get(0));
-    info.open(marker.get("map"), marker);
 }
 
 /*

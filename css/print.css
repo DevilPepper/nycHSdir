@@ -1,0 +1,16 @@
+@media screen
+{
+}
+@media print 
+{
+    body
+    {
+        background-color:white;
+	    color: black;
+    }
+    div.page 
+    {
+        width:8.5in;
+        height:11in;
+    }
+}

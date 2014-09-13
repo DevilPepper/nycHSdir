@@ -8,10 +8,12 @@ $(document).on('change', 'label :checkbox', function () {
 function refreshResults() //these each functions need to be neater
 {
     myFutureHS.clearAll();
+    com.clear();
     ///////////////////////////////////SOCRATA////////////////////////////////////////////////
     //set up socrata query
     myFutureHS.programs.select(['program_code', 'program_name', 'dbn', 'printed_school_name', 'interest_area', 'selection_method', 'borough', 'urls']);
     //$('.nycITT div, .location div').each(function () {
+
     $('div.sodaEQ').each(function () {
         queryEqual($(this), myFutureHS.programs);
     });
@@ -44,7 +46,31 @@ function refreshResults() //these each functions need to be neater
 
 
     ////////////////////////////////////SCHOOL DATA//////////////////////////////////////////
-    myFutureHS.schoolData.containedIn("location_category", ['High school', 'Ungraded', 'K-12 all grades']);
+    //myFutureHS.schoolData.containedIn("location_category", ['High school', 'Ungraded', 'K-12 all grades', 'Secondary School']);
+    myFutureHS.schoolData.contains("grades_final", "09");
+
+    myFutureHS.schoolData.notContainedIn("dbn", [
+        '05M685',
+        '29Q496',
+        '05M469',
+        '23K634',
+        '02M625',
+        '04M013',
+        '19K166',
+        '19K302',
+        '09X414',
+        '29Q494',
+        '07X203',
+        '11X142',
+        '12X050',
+        '09X064',
+        '23K073',
+        '17K167',
+        '19K174',
+        '09X230',
+        '07X385',
+        '22K495'
+    ]);
 
     //more filters for parse.com
     $('div.schoolDatEQ').each(function () {
@@ -59,7 +85,7 @@ function refreshResults() //these each functions need to be neater
         queryBetween($(this), myFutureHS.schoolData);
     });
 
-    myFutureHS.schoolData.limit(503);
+    myFutureHS.schoolData.limit(1000);
     ////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -72,6 +98,7 @@ function refreshResults() //these each functions need to be neater
     myFutureHS.demographics.greaterThan("grade_12", 0, true);
     myFutureHS.demographics.equalTo("school_year", "2011-2012");
     myFutureHS.demographics.limit(470);
+
     $('div.demoEQ').each(function () {
         queryEqual($(this), myFutureHS.demographics);
     });
@@ -85,7 +112,7 @@ function refreshResults() //these each functions need to be neater
     });
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-
+    highlighter('#filters', 'selected_criteria', myFutureHS.classes);
 
     var querying = $.when(myFutureHS.programs.find(), myFutureHS.doedb.find(), myFutureHS.schoolData.find(), myFutureHS.demographics.find());
     
@@ -143,6 +170,7 @@ function refreshResults() //these each functions need to be neater
                     college_readiness: parseEX.college_and_career_readiness_grade,
                     overall: parseEX.overall_grade,
                     attendance: parseEX.attendance_rate,
+                    average_completion_rate_for_remaining_regents: parseEX.average_completion_rate_for_remaining_regents,
 
                     //from school data
                     latitude: parseSchool[0].latitude,
@@ -156,7 +184,6 @@ function refreshResults() //these each functions need to be neater
                     printed_school_name: liteSODA.printed_school_name,
                     borough: liteSODA.borough,
                     urls: liteSODA.urls,
-
                     //the temp array goes here. Each program the school offers has it's own object.
                     programs: program
                 });
@@ -171,7 +198,7 @@ function refreshResults() //these each functions need to be neater
 
         console.log('merged data');
         console.log(myFutureHS.parseSODA); //for debugging
-
+        com.results = myFutureHS.parseSODA;
         //calculate the last page of results
         myFutureHS.lastPage = Math.ceil(myFutureHS.parseSODA.length / myFutureHS.perPage);
 
@@ -188,7 +215,7 @@ function refreshResults() //these each functions need to be neater
            
                     //map.setCenter(results[0].geometry.location);
 
-            makeMarker(myFutureHS.map, new google.maps.LatLng(entry.latitude, entry.longitude), entry.printed_school_name, myFutureHS.overlays, entry.dbn, myFutureHS.infoWindow);
+            myFutureHS.map.makeMarker(new google.maps.LatLng(entry.latitude, entry.longitude), entry.printed_school_name, entry.dbn, '.mapPins');
                     
                     centerLat += entry.latitude;
                     centerLng += entry.longitude;
@@ -212,11 +239,13 @@ function queryEqual($this, q) {
         er = $(this).val();
         if (!isNaN(+er)) er = +er;
         q.equalTo(elemID, er, elemID);
+        pushClass($this, myFutureHS.classes);
     });
     $this.find('input:checked').each(function () {
         er = $(this).val();
         if (!isNaN(+er)) er = +er;
         q.equalTo(elemID, er, elemID);
+        pushClass($this, myFutureHS.classes);
     });
     //if user entered a filter, use it.
     //if (er.length > 0) parseQuery.equalTo(filt, er);
@@ -229,11 +258,13 @@ function queryGreaterThan($this, q) {
         er = $(this).val();
         if (!isNaN(+er)) er = +er;
         q.greaterThan(elemID, er, elemID);
+        pushClass($this, myFutureHS.classes);
     });
     $this.find('input:checked').each(function () {
         er = $(this).val();
         if (!isNaN(+er)) er = +er;
         q.greaterThan(elemID, er, elemID);
+        pushClass($this, myFutureHS.classes);
     });
     //if user entered a filter, use it.
     //if (er.length > 0) parseQuery.equalTo(filt, er);
@@ -247,12 +278,14 @@ function queryBetween($this, q) {
         if (!isNaN(+er.greaterThan) && er.greaterThan != null) er.greaterThan = +er.greaterThan;
         if (!isNaN(+er.lessThan) && er.lessThan != null) er.lessThan = +er.lessThan;
         q.between(elemID, er.greaterThan, er.lessThan, elemID);
+        pushClass($this, myFutureHS.classes);
     });
     $this.find('input:checked').each(function () {
         er = $.parseJSON($(this).val());
         if (!isNaN(+er.greaterThan) && er.greaterThan != null) er.greaterThan = +er.greaterThan;
         if (!isNaN(+er.lessThan) && er.lessThan != null) er.lessThan = +er.lessThan;
         q.between(elemID, er.greaterThan, er.lessThan, elemID);
+        pushClass($this, myFutureHS.classes);
     });
     //if user entered a filter, use it.
     //if (er.length > 0) parseQuery.equalTo(filt, er);

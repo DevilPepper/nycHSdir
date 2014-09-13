@@ -8,40 +8,25 @@ var myFutureHS = {
 
     soda: null,
 
+    map: null,
+
     programs:null,
-
-    //KML data for districts
-    //doeDistrictsKML: 'https://data.cityofnewyork.us/api/geospatial/r8nu-ymqj?method=export&format=KML',
-
+    //'https://data.cityofnewyork.us/api/geospatial/r8nu-ymqj?method=export&format=KML'
     //Socrata db
     //nycITTdb: 'http://data.cityofnewyork.us/resource/mreg-rk5p.json?',
     //nycITTkey: '&$$app_token=CWamrEJN7KPGKA51TxJ4k9StU',
     //nycITTsel: '&$select=program_code,program_name,dbn,printed_school_name,interest_area,selection_method,borough,urls',
+    //myFutureHS.center = new google.maps.LatLng(40.7127, -74.0059);//NY latitute, longitude coordinates
 
-    //map pins array
-    overlays: [],
     //final array of objects
     parseSODA: [],
+
+    classes: [],
 
     currPage: 1,
     currPage2: 1,
     lastPage: 1,
     perPage: 4,
-
-    map: null,
-
-    mapOptions: null,
-
-    center: null,
-
-    //new geocoder
-    geocoder: null,
-
-    infoWindow: null,
-    
-    myPlace: null,
-
-    circle: null,
 
     genesis: function () {
         //langChange('xml/test.xml');
@@ -49,8 +34,8 @@ var myFutureHS = {
         //not sure when this is needed //never
         //var parsekey = 'QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC';
 
-        //map pins array
-        myFutureHS.overlays = [];
+        myFutureHS.map = new googleMapsWrapper($('#map'), 40.7127, -74.0059);//NY latitute, longitude coordinates
+
         //final array of objects
         myFutureHS.parseSODA = [];
 
@@ -60,46 +45,10 @@ var myFutureHS = {
         myFutureHS.lastPage = 1;
         myFutureHS.perPage = 4;
 
-        // Intialize our map
-        myFutureHS.center = new google.maps.LatLng(40.7127, -74.0059);//NY latitute, longitude coordinates
-        myFutureHS.mapOptions = {
-            zoom: 10,
-            center: myFutureHS.center //??
-        };
-        myFutureHS.map = new google.maps.Map($('#map').get(0), myFutureHS.mapOptions); //puts a new map in #map, applies some options, and also stores it in a variable
-        
-        //Add KML boundaries
-        /*
-        var doeBoundaries = new google.maps.KmlLayer({
-            url: doeDistrictsKML,
-            map: map
-        });
-        */
-        //console.log(doeBoundaries);
-
-
-        //new geocoder
-        myFutureHS.geocoder = new google.maps.Geocoder();
-
-        myFutureHS.infoWindow = new google.maps.InfoWindow({maxWidth: '20em'});
-
-        google.maps.event.addListener(myFutureHS.map, 'click', function () {
-            myFutureHS.infoWindow.close();
-        });
         //now hide the stuff that shouldn't be on the screen yet
         $('.search_results').hide();
         $('.more_info').hide();
         $('.search_criteria').hide();
-
-        myFutureHS.circle = new google.maps.Circle({
-            strokeColor: "#00FF00",
-            strokeOpacity: 0.8,
-            strokeWeight: 2,
-            fillColor: "#0000FF",
-            fillOpacity: 0.35,
-            map: myFutureHS.map,
-            radius: 500
-        });
 
         //make these things special
         $('#sidebar').accordion({ collapsible: true });
@@ -112,7 +61,7 @@ var myFutureHS = {
             step: 0.5,
             orientation: "horizontal",
             slide: function (event, ui) {
-                updateRadius(myFutureHS.circle, ui.value);
+                myFutureHS.map.updateRadius(ui.value);
             }
         });
 
@@ -164,8 +113,10 @@ var myFutureHS = {
             if (myFutureHS.currPage2 < myFutureHS.parseSODA.length) renderTemplates($('.print_wrapper'), 'print_tmpl.html', myFutureHS.parseSODA, ++myFutureHS.currPage2, 1);
         });
         $('.printIT').click(function () {
-            renderTemplates($('.print_wrapper'), 'print_tmpl.html', myFutureHS.parseSODA, myFutureHS.currPage2, 1);
-            $('.more_info').show();
+            //renderTemplates($('.print_wrapper'), 'print_tmpl.html', myFutureHS.parseSODA, myFutureHS.currPage2, 1);
+            //$('.more_info').show();
+            //var com = myFutureHS.parseSODA;
+            window.open("print.html");
         });
     },
 
@@ -191,17 +142,24 @@ var myFutureHS = {
         myFutureHS.currPage = 1;
         myFutureHS.currPage2 = 1;
 
-        //while there are still pins on the map, remove them from the map and the array
-        while (myFutureHS.overlays[0]) {
-            myFutureHS.overlays.pop().setMap(null);
-        }
+        myFutureHS.map.clearPins();
 
         //clear old results, if any
         myFutureHS.parseSODA = [];
+        myFutureHS.classes = [];
         myFutureHS.programs.clearAll();
         myFutureHS.doedb.clearAll();
         myFutureHS.schoolData.clearAll();
         myFutureHS.demographics.clearAll();
+    }
+};
+
+var com = {
+    queries: null,
+    results: [],
+    clear: function () {
+        com.queries = null;
+        com.results = [];
     }
 };
 

@@ -1,5 +1,18 @@
 ﻿function parseWrapper(clase)
 {
+    this.clase = Parse.Object.extend(clase);
+    this.query = null;
+    this.orables = {};
+    this.lim = null;
+    this.eq = {};
+    this.gt = {};
+    this.lt = {};
+    this.contains_keys = {};
+    this.containedIn_keys = {};
+    this.notcontainedIn_keys = {};
+    this.default = [];
+    this.base = false;
+
     function getFinds(oreo)
     {
         var oreos = [];
@@ -22,25 +35,18 @@
             //for (var eq in self.eq) { ored.equalTo(eq, self.eq[eq]); }
             //for (var gt in self.gt) { ored.greaterThan(gt, self.gt[gt]); }
             //for (var lt in self.lt) { ored.lessThan(lt, self.lt[lt]); }
-            for (var contained in self.contained) { ored.containedIn(contained, self.contained[contained]); }
+            for (var containedIn_keys in self.containedIn_keys) { ored.containedIn(containedIn_keys, self.containedIn_keys[containedIn_keys]); }
+            for (var contains_keys in self.contains_keys) { ored.contains(contains_keys, self.contains_keys[contains_keys]); }
+            for (var notcontainedIn_keys in self.notcontainedIn_keys) { ored.notContainedIn(notcontainedIn_keys, self.notcontainedIn_keys[notcontainedIn_keys]); }
             ors.push(ored);
         }
         if (objection) ors.push(self.query);
         return ors;
     }
 
-    this.clase = Parse.Object.extend(clase);
-    this.query = null;
-    this.orables = {};
-    this.lim = null;
-    this.eq = {};
-    this.gt = {};
-    this.lt = {};
-    this.contained = {};
-    this.default = [];
-    this.base = false;
-
     this.find = function () {
+        //console.log(this.query.classname);
+        console.log(this);
         if (!this.base) this.setBase();
         var orPromise = $.when.apply($, getFinds(orStuff(this)));
         var andPromise = $.Deferred();
@@ -76,7 +82,9 @@
         for (var eq in this.eq) { this.query.equalTo(eq, this.eq[eq]); }
         for (var gt in this.gt) { this.query.greaterThan(gt, this.gt[gt]); }
         for (var lt in this.lt) { this.query.lessThan(lt, this.lt[lt]); }
-        for (var contained in this.contained) { this.query.containedIn(contained, this.contained[contained]); }
+        for (var containedIn_keys in this.containedIn_keys) { this.query.containedIn(containedIn_keys, this.containedIn_keys[containedIn_keys]); }
+        for (var contains_keys in this.contains_keys) { this.query.contains(contains_keys, this.contains_keys[contains_keys]); }
+        for (var notcontainedIn_keys in this.notcontainedIn_keys) { this.query.notContainedIn(notcontainedIn_keys, this.notcontainedIn_keys[notcontainedIn_keys]); }
         
     }
 }
@@ -130,7 +138,11 @@ parseWrapper.prototype.between = function (key, gtval, ltval, orProp) {
 
 parseWrapper.prototype.limit = function (lim) { this.lim = lim; }
 
-parseWrapper.prototype.containedIn = function (key, vals) { this.contained[key] = vals; }
+parseWrapper.prototype.containedIn = function (key, vals) { this.containedIn_keys[key] = vals; }
+
+parseWrapper.prototype.contains = function (key, val) { this.contains_keys[key] = val; }
+
+parseWrapper.prototype.notContainedIn = function (key, vals) { this.notcontainedIn_keys[key] = vals; }
 
 parseWrapper.prototype.clearAll = function ()
 {
@@ -140,7 +152,32 @@ parseWrapper.prototype.clearAll = function ()
     this.eq = {};
     this.gt = {};
     this.lt = {};
-    this.contained = {};
+    this.contains_keys = {};
+    this.containedIn_keys = {};
+    this.notcontainedIn_keys = {};
     this.default = [];
     this.base = false;
+}
+
+Parse.Promise.prototype.toJqueryPromise = function () {
+    var def = jQuery.Deferred();
+
+    this.then(
+      def.resolve.bind(def),
+      def.reject.bind(def)
+    );
+
+    return def.promise();
+}
+
+Parse.Query.prototype.copy = function () {
+    var clone = new Parse.Query(this.objectClass);
+
+    clone._where = JSON.parse(JSON.stringify(this._where));
+    clone._include = JSON.parse(JSON.stringify(this._include));
+    clone._limit = this._limit; // negative limit means, do not send a limit
+    clone._skip = this._skip;
+    clone._extraOptions = JSON.parse(JSON.stringify(this._extraOptions));
+
+    return clone;
 }
