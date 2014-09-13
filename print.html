@@ -15,10 +15,101 @@
                 console.log(data);
                 console.log(data.results);
                 console.log(data.queries);
+
+                var $school = null;
+                $.each(data.results, function (i, school) {
+                    var $page = $('<div></div>');
+                    $page.attr("id", school.dbn);
+                    $page.addClass('page');
+                    $('body').append($page);
+
+                    var $schoolName = $('<h1></h1>');
+                    $schoolName.addClass('schoolName');
+                    $schoolName.text(school.printed_school_name);
+                    $page.append($schoolName);
+
+                    var $dbn = $('<h2></h2>');
+                    $dbn.addClass('dbn');
+                    $dbn.text(school.dbn);
+                    $page.append($dbn);
+
+                    var $principal = $('<p></p>');
+                    $principal.addClass('principal');
+                    $principal.text('Principal: ' + school.principal);
+                    $page.append($principal);
+
+                    var $boro = $('<p></p>');
+                    $boro.addClass('borough');
+                    $boro.text('Borough: ' + school.borough);
+                    $page.append($boro);
+
+                    var $total_enrollment = $('<p></p>');
+                    $total_enrollment.addClass('total_enrollment');
+                    $total_enrollment.text('Total Enrollment: ' + school.total_enrollment);
+                    $page.append($total_enrollment);
+
+                    var $attendance = $('<p></p>');
+                    $attendance.addClass('attendance');
+                    $attendance.text('Attendance Rate: ' + school.attendance);
+                    $page.append($attendance);
+
+                    var $programs = $('<table><caption>Programs Offered</caption><th>Program Name</th><th>Program Code</th><th>Interest Area</th><th>Selection Method</th></table>');
+                    $programs.addClass('programs');
+                    $page.append($programs);
+                    $.each(school.programs, function (j, program) {
+                        var $row = $('<tr></tr>');
+                        $programs.append($row);
+
+                        var $program_name = $('<td></td>');
+                        $program_name.text(program.program_name);
+                        $row.append($program_name);
+
+                        var $program_code = $('<td></td>');
+                        $program_code.text(program.program_code);
+                        $row.append($program_code);
+
+                        var $interest_area = $('<td></td>');
+                        $interest_area.text(program.interest_area);
+                        $row.append($interest_area);
+
+                        var $selection_method = $('<td></td>');
+                        $selection_method.text(program.selection_method);
+                        $row.append($selection_method);
+                    });
+
+                    var $regents = $('<p></p>');
+                    $regents.addClass('regents');
+                    $regents.text('Regents Completion Rate: ' + school.average_completion_rate_for_remaining_regents);
+                    $page.append($regents);
+
+                    var $college_readiness = $('<p></p>');
+                    $college_readiness.addClass('college_readiness');
+                    $college_readiness.text('College Readiness Score: ' + school.college_readiness);
+                    $page.append($college_readiness);
+
+                    var $postsecondary_enrollment = $('<p></p>');
+                    $postsecondary_enrollment.addClass('postsecondary_enrollment');
+                    $postsecondary_enrollment.text('Postsecondary Enrollment Rate: ' + school.postsecondary_enrollment);
+                    $page.append($postsecondary_enrollment);
+
+                    var $overall = $('<p></p>');
+                    $overall.addClass('overall');
+                    $overall.text('Overall Score: ' + school.overall);
+                    $page.append($overall);
+
+                    var $url = $('<div></div>');
+                    $url.addClass('footer');
+                    $url.text(school.urls);
+                    //$page.append($url);
+                    $school = $page;
+                });
+
+                $school.css("page-break-after", "avoid");
+
                 window.print();
             });
         </script>
 
     </head>
-    <body><div class="page"></div><div class="page"></div></body>
+    <body></body>
 </html>

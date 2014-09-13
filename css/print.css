@@ -5,12 +5,26 @@
 {
     body
     {
-        background-color:white;
+        background-color: white;
 	    color: black;
+    }
+    table, th, td
+    {
+        border: 1px solid black;
     }
     div.page 
     {
-        width:8.5in;
-        height:11in;
+        margin: 0px;
+        padding: 0px;
+        width: 8.5in;
+        height: 11in;
+        clear: both;
+        page-break-after: always;
+    }
+    div.footer 
+    {
+        position: absolute;
+        bottom: 0.5in;
+        left: 0.5in;
     }
 }

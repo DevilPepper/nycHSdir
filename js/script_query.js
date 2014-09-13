@@ -226,6 +226,8 @@ function refreshResults() //these each functions need to be neater
             myFutureHS.map.setCenter(new google.maps.LatLng(centerLat, centerLng));
         }
 
+        $('#showResults span').text(myFutureHS.parseSODA.length);
+
     });
     //////////////////////////////////////////////////////////////////////////////////////////
 
