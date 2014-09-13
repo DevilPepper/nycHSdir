@@ -40,6 +40,7 @@ local.properties
 *.suo
 *.user
 *.sln.docstates
+*.sln
 
 # Build results
 
@@ -174,7 +175,7 @@ Thumbs.db
 ehthumbs.db
 
 # Folder config file
-Desktop.ini
+[Dd]esktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
@@ -223,3 +224,4 @@ Copy of *.*
 parse.js
 script.js
 jquery.xdomainajax.js
+Web.config
