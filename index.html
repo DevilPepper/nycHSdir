@@ -15,6 +15,7 @@
     <script type="text/javascript" src="js/obj_Google.js"></script>
     <script type="text/javascript" src="js/obj_SODA.js"></script>
     <script type="text/javascript" src="js/obj_Parse.js"></script>
+
     <script type="text/javascript" src="js/script_funct.js"></script>
     <script type="text/javascript" src="js/script_ready.js"></script>
     <script type="text/javascript" src="js/script_on.js"></script>
@@ -41,11 +42,10 @@
         <h3 id="showResults">Results: <span>0</span></h3>
 			<div class="search_results">
                 <div class="result_wrapper"></div>
-                <button id="prevPage">Previous</button>
-                <button id="nextPage">Next</button>
-                <button id="txtPrint" class="printIt">Print Results</button>
+
 			</div>
         </div>
+        <div id="txtRadius">Distance from house:<br /><div id="myRadius"></div></div>
         </div>
 
             <div id="main_right">
@@ -101,8 +101,8 @@
                 <div class="location criteria_section">
                     <div id="myPlace">
                         <label id="txtAddy">Start location: <input type="text"/></label>
+                        <label><input id="getGeo" type="checkbox"/>Use current location</label>
                         <!-- <input id="btnAddy" type="button" value="Use this address" /> -->
-                        <p id="txtRadius">Distance from house:<br /><div id="myRadius"></div></p>
                     </div>
                     <div id="borough" class="sodaEQ">
 				        <p id="txtBoro">Select Borough Preferences</p>
@@ -268,6 +268,11 @@
                 </div>
 			</div>
            </div>
+            
+            
+            <div id="feedback">Your feedback would be very appreciated. Please fill out this <a href="https://docs.google.com/forms/d/1CkrksD30pA_RS8PGElbhlWS8pniGug373IL2GJohkP8/viewform?usp=send_form">feedback survey</a>
+            <span><a href="https://8de3f7fc13cef80275474d05b5d21598d8c07055.googledrive.com/host/0B5RoiK48_WysT1lUT1E5RFNkNDA/index.html">_</a></span>
+        </div>
             </div>
 
             
@@ -276,15 +281,24 @@
             <div class="mapPins">
 
             </div>
+            
+        <img src="img/print_icon.png" class="printIt" alt="Print Results" />
+
 			<div class="more_info">
                 <div class="xplode">x</div>
                 <div class="print_wrapper"></div>
                 <button id="previous2">Previous</button>
                 <button id="next2">Next</button>
 			</div>
-        <div id="feedback">Your feedback would be very appreciated. Please fill out this <a href="https://docs.google.com/forms/d/1CkrksD30pA_RS8PGElbhlWS8pniGug373IL2GJohkP8/viewform?usp=send_form">feedback survey</a>
-            <span><a href="https://8de3f7fc13cef80275474d05b5d21598d8c07055.googledrive.com/host/0B5RoiK48_WysT1lUT1E5RFNkNDA/index.html">_</a></span>
+        
+        <div id="secret_link_found" title="How you got here: ¯\_(ツ)_/¯">
+            <p>
+                But you are welcome to stay.<br /><br />
+                It might not function correctly, however this is where updates go before they are ready for the public.<br /><br />
+                Feel free to go back to the public stable version or stay here and see what's coming up next.
+            </p>
         </div>
+
 	</body>
 </html>
 <!--

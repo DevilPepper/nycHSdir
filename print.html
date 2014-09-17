@@ -104,9 +104,11 @@
                     $school = $page;
                 });
 
-                $school.css("page-break-after", "avoid");
-
-                window.print();
+                if ($school != null)
+                {
+                    $school.css("page-break-after", "avoid");
+                    window.print();
+                }
             });
         </script>
 

@@ -5,7 +5,7 @@
 
     this.center = new google.maps.LatLng(lat, lng);
     this.mapOptions = {
-        zoom: 10,
+        zoom: 11,
         center: this.center
     };
     this.map = new google.maps.Map($map.get(0), this.mapOptions); //puts a new map in #map, applies some options, and also stores it in a variable;
@@ -19,7 +19,6 @@
         strokeWeight: 2,
         fillColor: "#0000FF",
         fillOpacity: 0.35,
-        map: this.map,
         radius: 500
     });
 
@@ -84,14 +83,35 @@ googleMapsWrapper.prototype.popPin = function(marker, clase) {
 googleMapsWrapper.prototype.updateMyPlace = function (loc) {
     if (this.myPlace != null) this.myPlace.setMap(null);
     this.myPlace = null;
-    this.myPlace = new google.maps.Marker({
-        map: this.map,
-        position: loc,
-        //title: location.name
-        title: 'My Place',
-        icon: 'img/sandCastle.gif'
-    });
-    this.circle.bindTo('center', this.myPlace, 'position');
+    if (loc != null) {
+        this.myPlace = new google.maps.Marker({
+            map: this.map,
+            position: loc,
+            //title: location.name
+            title: 'My Place',
+            icon: 'img/sandCastle.gif'
+        });
+        this.circle.bindTo('center', this.myPlace, 'position');
+        this.circle.setMap(this.map);
+    }
+    else this.circle.setMap(null);
 }
 
+googleMapsWrapper.prototype.currentLocation = function ()
+{
+    var self = this;
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var currentLocal = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            self.updateMyPlace(currentLocal);
+            return 0;
+        }, function () {
+            return -1;
+        });
+    }
+        // Browser doesn't support Geolocation
+    else {
+        return -1;
+    }
+}
 googleMapsWrapper.prototype.setCenter = function (centre) { this.map.setCenter(centre); }

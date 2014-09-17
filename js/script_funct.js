@@ -83,6 +83,11 @@ function renderTemplates($dest, tmpl, data, pageNo, perPage) {
     $dest.loadTemplate(tmpl, data, { isFile: true, paged: true, pageNo: pageNo, elemPerPage: perPage });
 }
 
+function appendTemplates($dest, tmpl, data, pageNo, perPage) {
+    //it then sets the data in place very nicely.
+    $dest.loadTemplate(tmpl, data, { isFile: true, append: true, paged: true, pageNo: pageNo, elemPerPage: perPage });
+}
+
 function displayXML($XMLement) {
     var XMLement = $($XMLement);
 
@@ -104,6 +109,17 @@ function langChange(xml) {
     $.get(xml, function (XEmL, e) {
         displayXML(XEmL);
     });
+}
+
+function iPromise(toDo) {
+    var def = jQuery.Deferred();
+
+    toDo.then(
+      def.resolve.bind(def),
+      def.reject.bind(def)
+    );
+
+    return def;
 }
 
 /*

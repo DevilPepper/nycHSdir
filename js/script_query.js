@@ -1,5 +1,5 @@
 //$(document).on('click', '#showResults', function () {
-$(document).on('change', 'label :checkbox', function () {
+$(document).on('change', 'label :checkbox:not([id=getGeo])', function () {
     myFutureHS.parseInit();
     myFutureHS.sodaInit();
     refreshResults();
@@ -114,11 +114,10 @@ function refreshResults() //these each functions need to be neater
 
     highlighter('#filters', 'selected_criteria', myFutureHS.classes);
 
-    var querying = $.when(myFutureHS.programs.find(), myFutureHS.doedb.find(), myFutureHS.schoolData.find(), myFutureHS.demographics.find());
-    
+    myFutureHS.querying = iPromise($.when(myFutureHS.programs.find(), myFutureHS.doedb.find(), myFutureHS.schoolData.find(), myFutureHS.demographics.find()))//.iPromise()
 
     //////////////////////////////////RESULTS ARE IN/////////////////////////////////////////
-    querying.done(function (searchResults, parsedb, schoolDat, demo) {
+    .done(function (searchResults, parsedb, schoolDat, demo) {
         //searchResults = searchResults[0];
         //parsedb = parseAND(parsedb);
         //schoolDat = parseAND(schoolDat);
@@ -223,15 +222,19 @@ function refreshResults() //these each functions need to be neater
         if (myFutureHS.parseSODA.length > 0) {
             centerLat /= myFutureHS.parseSODA.length;
             centerLng /= myFutureHS.parseSODA.length;
-            myFutureHS.map.setCenter(new google.maps.LatLng(centerLat, centerLng));
+            myFutureHS.map.setCenter(new google.maps.LatLng(centerLat, centerLng-0.2));
+            $('.printIT').show();
         }
+        else $('.printIT').hide();
 
         $('#showResults span').text(myFutureHS.parseSODA.length);
 
-    });
+    })
     //////////////////////////////////////////////////////////////////////////////////////////
-
-    nycITTurl = null;
+    .always(function () {
+        myFutureHS.querying = null;
+    });
+    //nycITTurl = null;
 }
 
 function queryEqual($this, q) {

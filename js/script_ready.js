@@ -18,6 +18,8 @@ var myFutureHS = {
     //nycITTsel: '&$select=program_code,program_name,dbn,printed_school_name,interest_area,selection_method,borough,urls',
     //myFutureHS.center = new google.maps.LatLng(40.7127, -74.0059);//NY latitute, longitude coordinates
 
+    querying: null,
+
     //final array of objects
     parseSODA: [],
 
@@ -26,7 +28,7 @@ var myFutureHS = {
     currPage: 1,
     currPage2: 1,
     lastPage: 1,
-    perPage: 4,
+    perPage: 7,
 
     genesis: function () {
         //langChange('xml/test.xml');
@@ -34,7 +36,29 @@ var myFutureHS = {
         //not sure when this is needed //never
         //var parsekey = 'QHI0Fuo5IJolPoTAJOw8EqMCjrS6Srk7wSJzwDOC';
 
-        myFutureHS.map = new googleMapsWrapper($('#map'), 40.7127, -74.0059);//NY latitute, longitude coordinates
+        $('#secret_link_found').dialog({
+            modal: true,
+            autoOpen: false,
+            show: {
+                effect: "clip",
+                duration: 1000
+            },
+            hide: {
+                effect: "explode",
+                duration: 500
+            },
+            buttons: {
+                "Take me back!": function () {
+                    window.location.replace("http://supastuff.github.io/nycHSdir/");
+                },
+                "I\'ll stay": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        if (document.URL.search("googledrive") != -1) $('#secret_link_found').dialog("open");
+
+        myFutureHS.map = new googleMapsWrapper($('#map'), 40.7127, -74.0059-0.1);//NY latitute, longitude coordinates
 
         //final array of objects
         myFutureHS.parseSODA = [];
@@ -43,12 +67,13 @@ var myFutureHS = {
         myFutureHS.currPage = 1;
         myFutureHS.currPage2 = 1;
         myFutureHS.lastPage = 1;
-        myFutureHS.perPage = 4;
 
         //now hide the stuff that shouldn't be on the screen yet
-        $('.search_results').hide();
+        //$('.search_results').hide();
         $('.more_info').hide();
         $('.search_criteria').hide();
+        $('.printIT').hide();
+        $("#txtRadius").hide();
 
         //make these things special
         $('#sidebar').accordion({ collapsible: true });
@@ -96,14 +121,19 @@ var myFutureHS = {
         });
 
 
-
-
         //click events for next and previous buttons. They load next page of results
         $('#prevPage').click(function () {
             if (myFutureHS.currPage > 1) renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', myFutureHS.parseSODA, --myFutureHS.currPage, myFutureHS.perPage);
         });
+
+        $('.search_results').bind('scroll', function () {
+            if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
+                if (myFutureHS.currPage < myFutureHS.lastPage) appendTemplates($('.result_wrapper'), 'search_results_tmpl.html', myFutureHS.parseSODA, ++myFutureHS.currPage, myFutureHS.perPage);
+            }
+        });
+
         $('#nextPage').click(function () {
-            if (myFutureHS.currPage < myFutureHS.lastPage) renderTemplates($('.result_wrapper'), 'search_results_tmpl.html', myFutureHS.parseSODA, ++myFutureHS.currPage, myFutureHS.perPage);
+            if (myFutureHS.currPage < myFutureHS.lastPage) appendTemplates($('.result_wrapper'), 'search_results_tmpl.html', myFutureHS.parseSODA, ++myFutureHS.currPage, myFutureHS.perPage);
         });
         //these were rushed. I don't really want to rename them, though
         $('#previous2').click(function () {
@@ -143,6 +173,9 @@ var myFutureHS = {
         myFutureHS.currPage2 = 1;
 
         myFutureHS.map.clearPins();
+
+        if (myFutureHS.querying != null)
+            myFutureHS.querying.reject();
 
         //clear old results, if any
         myFutureHS.parseSODA = [];

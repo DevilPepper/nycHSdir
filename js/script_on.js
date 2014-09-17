@@ -43,12 +43,40 @@ $(document).on('click', '.result_name', function () {
 });
 
 $(document).on('change', '#myPlace :text', function () {
-    myFutureHS.map.geocoder.geocode({
-        'address': $('#myPlace :text').val()
-    }, function (results, status) {
-        if (status == google.maps.GeocoderStatus.OK) {
-            //map.setCenter(results[0].geometry.location);
-            myFutureHS.map.updateMyPlace(results[0].geometry.location);
+    var addy = $('#myPlace :text').val();
+    if (addy == "") {
+        myFutureHS.map.updateMyPlace(null);
+        $("#txtRadius").hide();
+        $('#getGeo').attr('checked', false);
+    }
+    else {
+        $("#txtRadius").show();
+        myFutureHS.map.geocoder.geocode({
+            'address': addy
+        }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                //map.setCenter(results[0].geometry.location);
+                myFutureHS.map.updateMyPlace(results[0].geometry.location);
+            }
+        });
+    }
+});
+
+$(document).on('change', '#getGeo', function () {
+    var getGeo = $(this);
+    if (getGeo.is(':checked')) {
+        if (myFutureHS.map.currentLocation() == -1) {
+            alert("Current location not supported on your browser or device");
+            getGeo.attr('checked', false);
         }
-    });
+        else {
+            $('#myPlace :text').val("Current Location");
+            $("#txtRadius").show();
+        }
+    }
+    else {
+        myFutureHS.map.updateMyPlace(null);
+        $('#myPlace :text').val("");
+        $("#txtRadius").hide();
+    }
 });
