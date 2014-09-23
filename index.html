@@ -4,6 +4,36 @@
 	
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+    <style type="text/css">
+        /*per index css*/
+        input[type=checkbox] {
+            visibility: hidden;
+        }
+
+        li.selected_criteria {
+        color: #ff8a00;
+    }
+
+            label:hover 
+            {
+                background: #000000;
+                /*background:#eaeef8;*/
+                cursor: pointer;
+            }
+
+            label.selected {
+                /* Fallback for web browsers that doesn't support RGBa */
+                background: rgb(255,138,0);
+                /* RGBa with 0.8 opacity */
+                background: rgba(255,138,0, 0.8);
+            }
+            label.selected:hover 
+            {
+                background: #ff8a00;
+                /*background:#eaeef8;*/
+                cursor: pointer;
+            }
+    </style>
 	
 	<script type="text/javascript" src="js/jquery.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.js"></script>
@@ -17,9 +47,109 @@
     <script type="text/javascript" src="js/obj_Parse.js"></script>
 
     <script type="text/javascript" src="js/script_funct.js"></script>
-    <script type="text/javascript" src="js/script_ready.js"></script>
+    <script type="text/javascript" src="js/script_obj.js"></script>
     <script type="text/javascript" src="js/script_on.js"></script>
     <script type="text/javascript" src="js/script_query.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            ////////////////////ui code will go here//////////////////////////////
+
+            //warning box stating that they are viewing the google drive version and it may be broken
+            $('#secret_link_found').dialog({
+                modal: true,
+                autoOpen: false,
+                show: {
+                    effect: "clip",
+                    duration: 1000
+                },
+                hide: {
+                    effect: "explode",
+                    duration: 500
+                },
+                buttons: {
+                    "Take me back!": function () {
+                        window.location.replace("http://supastuff.github.io/nycHSdir/");
+                    },
+                    "I\'ll stay": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            }); ////end of $('#secret_link_found').dialog();
+
+            //check if users are viewing the google drive version and pop up $('#secret_link_found')
+            if (document.URL.search("googledrive") != -1) $('#secret_link_found').dialog("open");
+
+            //now hide the stuff that shouldn't be on the screen yet
+            //$('.search_results').hide();
+            $('.more_info').hide();
+            $('.search_criteria').hide();
+            $('.printIT').hide();
+            $("#txtRadius").hide();
+
+            //make these things special
+            $('#sidebar').accordion({ collapsible: true });
+            $('#filters').selectable();
+            $('#myRadius').slider({
+                range: "min",
+                max: 10000,
+                min: 500,
+                value: 500,
+                step: 0.5,
+                orientation: "horizontal",
+                slide: function (event, ui) {
+                    myFutureHS.map.updateRadius(ui.value);
+                }
+            });
+
+            //enable lazyload
+            $('.search_results').bind('scroll', function () {
+                if ($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
+                    if (myFutureHS.currPage < myFutureHS.lastPage) appendTemplates($('.result_wrapper'), 'search_results_tmpl.html', myFutureHS.parseSODA, ++myFutureHS.currPage, myFutureHS.perPage);
+                }
+            });
+
+            $(document).on('change', 'label :checkbox', function () {
+                $(this).parent().toggleClass("selected");
+            });
+
+            ///////////////////
+            //these are for jquery-loadTemplate.js
+            /*may be uneccessary
+            $.addTemplateFormatter("Program", function (value, options) {
+                return "Program name: " + value;
+            });
+            $.addTemplateFormatter("Interest", function (value, options) {
+                return "Interest area: " + value;
+            });
+            $.addTemplateFormatter("Admission", function (value, options) {
+                return "Admission method: " + value;
+            });
+            $.addTemplateFormatter("Overall", function (value, options) {
+                return "Overall ranking: " + value;
+            });
+            $.addTemplateFormatter("College", function (value, options) {
+                return "College-Readiness ranking: " + value;
+            });
+            $.addTemplateFormatter("Principal", function (value, options) {
+                return "Principal " + value;
+            });
+            $.addTemplateFormatter("Attend", function (value, options) {
+                return "Attendance rate: " + value;
+            });
+            $.addTemplateFormatter("Post2nd", function (value, options) {
+                return "Post secondary enrollment rate: " + value;
+            });
+            $.addTemplateFormatter("Bold", function (value, options) {
+                return "<b>" + value + "</b>";
+            });
+            */
+            ///////////////////
+
+            //finally, initialize the core objects.
+            myFutureHS.genesis();
+        });
+    </script>
 	
 </head>
 	<body>
@@ -242,7 +372,7 @@
                         <label><input type="checkbox" value='{"greaterThan":"20%","lessThan":"30%"}' />20-30%</label>
                         <label><input type="checkbox" value='{"greaterThan":"10%","lessThan":"20%"}' />10-20%</label>
                         </div>
-
+                        <!--
                         <div id="percent_black_or_hispanic" class="progressBET">
                             <p>Percentage of students that are black or hispanic</p>
                         <label><input type="checkbox" value='{"greaterThan":"90%","lessThan":"99.999%"}' />90-100%</label>
@@ -255,7 +385,7 @@
                         <label><input type="checkbox" value='{"greaterThan":"20%","lessThan":"30%"}' />20-30%</label>
                         <label><input type="checkbox" value='{"greaterThan":"10%","lessThan":"20%"}' />10-20%</label>
                         </div>
-
+                        -->
                         <div id="total_enrollment" class="demoBET">
                             <p>School size</p>
                         <label><input type="checkbox" value='{"greaterThan":null,"lessThan":450}' />small</label>

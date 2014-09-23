@@ -367,11 +367,6 @@ label {
     float: left;
     width: 20%;
 }
-label:hover {
-    background:#000000;
- /*background:#eaeef8;*/
- cursor:pointer;
-}
 
 #feedback span 
 {
