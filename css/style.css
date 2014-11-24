@@ -210,19 +210,19 @@ div.nycDOE
     margin-top:15%;
 }
 
-.result_url a:link
+a:link
 {
     color: #ffe78a;
 }
-.result_url a:visited
+a:visited
 {
     color: #ff8a00;
 }
-.result_url a:hover
+a:hover
 {
     color: #ffff92;
 }
-.result_url a:active
+a:active
 {
     color: #ffff9a;
 }
@@ -378,7 +378,7 @@ label {
         z-index:2;
         bottom:1em;
         background:black;
-        width:50em;
+        width:31em;
     }
 
 .ui-accordion .ui-accordion-content {
