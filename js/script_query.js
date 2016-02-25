@@ -11,7 +11,7 @@ function refreshResults() //these each functions need to be neater
     com.clear();
     ///////////////////////////////////SOCRATA////////////////////////////////////////////////
     //set up socrata query
-    myFutureHS.programs.select(['program_code', 'program_name', 'dbn', 'printed_school_name', 'interest_area', 'selection_method', 'borough', 'urls']);
+    myFutureHS.programs.select(['dbn', 'school_name', 'boro', 'website']);
     //$('.nycITT div, .location div').each(function () {
 
     $('div.sodaEQ').each(function () {

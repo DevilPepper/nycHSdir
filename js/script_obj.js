@@ -87,7 +87,7 @@ var myFutureHS = {
     sodaInit: function () {
         if (myFutureHS.soda == null) {
             myFutureHS.soda = SODA.init("CWamrEJN7KPGKA51TxJ4k9StU");
-            myFutureHS.programs = myFutureHS.soda.extend("data.cityofnewyork.us", "mreg-rk5p");
+            myFutureHS.programs = myFutureHS.soda.extend("data.cityofnewyork.us", "n3p6-zve2");
         }
     },
 
